@@ -1,3 +1,5 @@
+library(opal)
+library(dsBoltzmannMachinesClient)
 logindata <- data.frame(server = "server",
                         url = "http://10.5.10.57:8080",
                         user = "user",
