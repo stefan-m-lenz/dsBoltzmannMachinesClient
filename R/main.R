@@ -1,9 +1,6 @@
-ds.monitored_fitrbm <- function(datasources, x, ...) {
+ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm', ...) {
    # see https://stackoverflow.com/questions/33288387/r-using-the-ellipsis-in-a-call
-   expr <- c(as.symbol("monitored_fitrbmDS"), list(x), substitute(...()))
-   names(expr)[2] <- "x"
-   cally <- as.call(expr)
-
+   cally <- call('monitored_fitrbmDS', newobj = newobj, data = data)
    monitoringoutput <- datashield.aggregate(datasources, cally)
    return(monitoringoutput)
 }
