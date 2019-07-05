@@ -1,5 +1,5 @@
 ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
-                                monitoringdata = NULL,
+                                monitoringdata = NULL, # TODO add labels, choose monitoring function
                                 # keyword arguments for fitrbm
                                 nhidden = NULL,
                                 epochs = NULL,
@@ -10,7 +10,7 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
                                 pcd = NULL,
                                 cdsteps = NULL,
                                 batchsize = NULL,
-                                rbmtype = NULL,# TODO
+                                rbmtype = NULL,
                                 startrbm = NULL)
 {
    if (!is.null(learningrates)) {
@@ -36,4 +36,14 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
 
    monitoringoutput <- datashield.aggregate(datasources, cally)
    return(monitoringoutput)
+}
+
+ds.splitdata <- function(data, ratio, newobj1, newobj2) {
+   cally <- call("splitdataDS", data, ratio, newobj1, newobj2)
+   datashield.aggregate(datasources, cally)
+}
+
+ds.setBoltzmannSeed <- function(seed) {
+   cally <- call("setBoltzmannSeedDS", seed)
+   datashield.aggregate(datasources, cally)
 }
