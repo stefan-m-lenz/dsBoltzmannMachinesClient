@@ -38,12 +38,12 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
    return(monitoringoutput)
 }
 
-ds.splitdata <- function(data, ratio, newobj1, newobj2) {
+ds.splitdata <- function(datasources, data, ratio, newobj1, newobj2) {
    cally <- call("splitdataDS", data, ratio, newobj1, newobj2)
    datashield.aggregate(datasources, cally)
 }
 
-ds.setBoltzmannSeed <- function(seed) {
+ds.setBoltzmannSeed <- function(datasources, seed) {
    cally <- call("setBoltzmannSeedDS", seed)
    datashield.aggregate(datasources, cally)
 }
