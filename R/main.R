@@ -1,4 +1,5 @@
 ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
+                                monitoring = "reconstructionerror",
                                 monitoringdata = NULL,
                                 # TODO choose monitoring function
                                 # keyword arguments for fitrbm
@@ -23,6 +24,7 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
    }
 
    cally <- call('monitored_fitrbmDS', newobj = newobj, data = data,
+                 monitoring = monitoring,
                  monitoringdata = monitoringdata,
                  # keyword arguments for fitrbm
                  # (The  order is important (must be same as in server package)
