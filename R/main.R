@@ -1,5 +1,6 @@
 ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
-                                monitoringdata = NULL, # TODO add labels, choose monitoring function
+                                monitoringdata = NULL,
+                                # TODO choose monitoring function
                                 # keyword arguments for fitrbm
                                 nhidden = NULL,
                                 epochs = NULL,
@@ -11,10 +12,14 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
                                 cdsteps = NULL,
                                 batchsize = NULL,
                                 rbmtype = NULL,
-                                startrbm = NULL)
-{
+                                startrbm = NULL) {
+
    if (!is.null(learningrates)) {
       learningrates <- paste0(as.character(learningrates), collapse = ",")
+   }
+
+   if (!is.null(monitoringdata)) {
+      monitoringdata <- paste(monitoringdata, collapse = ",")
    }
 
    cally <- call('monitored_fitrbmDS', newobj = newobj, data = data,
