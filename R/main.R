@@ -1,7 +1,6 @@
 ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
                                 monitoring = "reconstructionerror",
                                 monitoringdata = NULL,
-                                # TODO choose monitoring function
                                 # keyword arguments for fitrbm
                                 nhidden = NULL,
                                 epochs = NULL,
