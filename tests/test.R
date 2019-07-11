@@ -25,6 +25,8 @@ result <- ds.monitored_fitrbm(o, data = "D.Train",
                               nhidden = 2,
                               learningrate = 0.005, epochs = 25)
 
+ds.samples(datasources = o, bm = "rbm", nsamples = 5, burnin = 100)
+
 result <- ds.monitored_fitrbm(o, data = "D.Train", monitoring = NULL)
 
 ds.monitored_fitrbm(o, data = "D", learningrates = rep(0.001, 10), epochs = 10)
