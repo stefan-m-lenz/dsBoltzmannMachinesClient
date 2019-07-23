@@ -14,13 +14,8 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
                                 rbmtype = NULL,
                                 startrbm = NULL) {
 
-   if (!is.null(learningrates)) {
-      learningrates <- paste0(as.character(learningrates), collapse = ",")
-   }
-
-   if (!is.null(monitoringdata)) {
-      monitoringdata <- paste(monitoringdata, collapse = ",")
-   }
+   learningrates <- as.dsVectorArg(learningrates)
+   monitoringdata <- as.dsVectorArg(monitoringdata)
 
    cally <- call('monitored_fitrbmDS', newobj = newobj, data = data,
                  monitoring = monitoring,
@@ -51,10 +46,11 @@ ds.splitdata <- function(datasources, data, ratio, newobj1, newobj2) {
 }
 
 
-ds.setBoltzmannSeed <- function(datasources, seed) {
+ds.setJuliaSeed <- function(datasources, seed) {
    cally <- call("setBoltzmannSeedDS", seed)
    datashield.aggregate(datasources, cally)
 }
+
 
 ds.samples <- function(datasources, bm, nsamples,
                        burnin = NULL,
@@ -68,4 +64,46 @@ ds.samples <- function(datasources, bm, nsamples,
                  conditionValue = conditionValue,
                  samplelast = samplelast)
    datashield.aggregate(datasources, cally)
+}
+
+
+ds.defineLayer <- function(datasources, newobj,
+                           epochs = NULL,
+                           learningrate = NULL,
+                           learningrates = NULL,
+                           sdlearningrate = NULL,
+                           sdlearningrates = NULL,
+                           categories = NULL,
+                           monitoring = NULL,
+                           rbmtype = NULL,
+                           nhidden = NULL,
+                           nvisible = NULL,
+                           batchsize = NULL,
+                           pcd = NULL,
+                           cdsteps = NULL,
+                           startrbm = NULL) {
+
+   learningrates <- as.dsVectorArg(learningrates)
+   sdlearningrates <- as.dsVectorArg(sdlearningrates)
+   nhidden <- as.dsVectorArg(nhidden)
+   nvisible <- as.dsVectorArg(nvisible)
+   categories <- as.dsVectorArg(categories)
+
+   cally <- call("defineLayerDS",
+                 epochs = epochs,
+                 learningrate = learningrate,
+                 learningrates = learningrates,
+                 sdlearningrate = sdlearningrate,
+                 sdlearningrates = sdlearningrates,
+                 categories = categories,
+                 monitoring = monitoring,
+                 rbmtype = rbmtype,
+                 nhidden = nhidden,
+                 nvisible = nvisible,
+                 batchsize = batchsize,
+                 pcd = pcd,
+                 cdsteps = cdsteps,
+                 startrbm = startrbm)
+
+   datashield.assign(datasources, newobj, cally)
 }

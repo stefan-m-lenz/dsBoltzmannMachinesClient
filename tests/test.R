@@ -9,8 +9,11 @@ logindata <- data.frame(server = "server",
                         password = "password",
                         table ="50bin.x")
 o <- datashield.login(logins = logindata, assign = TRUE)
+
 ds.splitdata(o, "D", 0.1, "D.Train", "D.Test")
-result <- ds.monitored_fitrbm(o, data = "D.Train", monitoringdata = "D.Test", learningrate = 0.001)
+ds.defineLayer(o, newobj = "t1", nhidden = 1, epochs = 5)
+result <- ds.monitored_fitrbm(o, data = "D.Train", monitoringdata = "D.Test", learningrate = 0.001, epochs = 2) # fast test
+
 result <- ds.monitored_fitrbm(o, data = "D.Train",
                               monitoringdata = c("D.Train", "D.Test"), learningrate = 0.001)
 
