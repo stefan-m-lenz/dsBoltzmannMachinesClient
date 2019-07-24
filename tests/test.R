@@ -21,7 +21,7 @@ result <- ds.monitored_fitrbm(o, data = "D.Train",
                               monitoringdata = c("D.Train", "D.Test"),
                               monitoring = "exactloglikelihood",
                               nhidden = 2, learningrate = 0.005, epochs = 25)
-
+ds.setJuliaSeed(o, 5)
 result <- ds.monitored_fitrbm(o, data = "D.Train",
                               monitoringdata = c("D.Train", "D.Test"),
                               monitoring = "loglikelihood",

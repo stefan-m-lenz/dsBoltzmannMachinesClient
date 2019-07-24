@@ -43,12 +43,14 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
 ds.splitdata <- function(datasources, data, ratio, newobj1, newobj2) {
    cally <- call("splitdataDS", data, ratio, newobj1, newobj2)
    datashield.aggregate(datasources, cally)
+   invisible()
 }
 
 
 ds.setJuliaSeed <- function(datasources, seed) {
-   cally <- call("setBoltzmannSeedDS", seed)
+   cally <- call("setJuliaSeedDS", seed)
    datashield.aggregate(datasources, cally)
+   invisible()
 }
 
 
@@ -89,14 +91,13 @@ ds.defineLayer <- function(datasources, newobj,
    nvisible <- as.dsVectorArg(nvisible)
    categories <- as.dsVectorArg(categories)
 
-   cally <- call("defineLayerDS",
+   cally <- call("defineLayerDS", newobj,
                  epochs = epochs,
                  learningrate = learningrate,
                  learningrates = learningrates,
                  sdlearningrate = sdlearningrate,
                  sdlearningrates = sdlearningrates,
                  categories = categories,
-                 monitoring = monitoring,
                  rbmtype = rbmtype,
                  nhidden = nhidden,
                  nvisible = nvisible,
@@ -105,5 +106,6 @@ ds.defineLayer <- function(datasources, newobj,
                  cdsteps = cdsteps,
                  startrbm = startrbm)
 
-   datashield.assign(datasources, newobj, cally)
+   datashield.aggregate(datasources, cally)
+   invisible()
 }

@@ -1,4 +1,1 @@
-export("ds.monitored_fitrbm")
-export("ds.splitdata")
-export("ds.samples")
-export("ds.defineLayer")
+exportPattern("ds\\..*")
