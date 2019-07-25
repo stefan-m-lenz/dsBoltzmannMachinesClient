@@ -26,11 +26,17 @@ result <- ds.monitored_fitrbm(o, data = "D.Train",
                               monitoringdata = c("D.Train", "D.Test"),
                               monitoring = "loglikelihood",
                               nhidden = 2,
-                              learningrate = 0.005, epochs = 25)
+                              learningrate = 0.005, epochs = 25) # TODO change plots for likelihood
 
 ds.samples(datasources = o, bm = "rbm", nsamples = 5, burnin = 100)
 
 result <- ds.monitored_fitrbm(o, data = "D.Train", monitoring = NULL)
+
+o <- datashield.login(logins = logindata, assign = TRUE)
+result <- ds.monitored_stackrbms(o)
+result <- ds.monitored_stackrbms(o, nhiddens = c(6,5,4), epochs = 15, predbm = TRUE, learningrate = 0.01, batchsize = 5)
+plotEvaluation(result[[1]][[3]])
+atashield.logout(o)
 
 ds.monitored_fitrbm(o, data = "D", learningrates = rep(0.001, 10), epochs = 10)
 ds.monitored_fitrbm(o, data = "D", epochs = 10, newobj = "rbm1")
@@ -40,4 +46,4 @@ ds.monitored_fitrbm(o, data = "D", startrbm = "rbm1")
 
 result <- ds.monitored_fitrbm(o, data = "D", epochs = 100, batchsize = 10, pcd = FALSE)
 plotEvaluation(result[[1]])
-datashield.logout(o)
+

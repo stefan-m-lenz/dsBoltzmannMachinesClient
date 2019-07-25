@@ -1,4 +1,4 @@
-ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
+ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                                 monitoring = "reconstructionerror",
                                 monitoringdata = NULL,
                                 # keyword arguments for fitrbm
@@ -14,8 +14,9 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
                                 rbmtype = NULL,
                                 startrbm = NULL) {
 
-   learningrates <- as.dsVectorArg(learningrates)
-   monitoringdata <- as.dsVectorArg(monitoringdata)
+   monitoring <- asDSVectorArg(monitoring)
+   learningrates <- asDSVectorArg(learningrates)
+   monitoringdata <- asDSVectorArg(monitoringdata)
 
    cally <- call('monitored_fitrbmDS', newobj = newobj, data = data,
                  monitoring = monitoring,
@@ -34,6 +35,40 @@ ds.monitored_fitrbm <- function(datasources, data, newobj = 'rbm',
                  batchsize = batchsize,
                  rbmtype = rbmtype,
                  startrbm = startrbm)
+
+   monitoringoutput <- datashield.aggregate(datasources, cally)
+   return(monitoringoutput)
+}
+
+
+ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
+                                   monitoring = "reconstructionerror",
+                                   monitoringdata = NULL,
+                                   # keyword arguments for stackrbms
+                                   nhiddens = NULL,
+                                   epochs = NULL,
+                                   predbm = NULL,
+                                   samplehidden = NULL,
+                                   learningrate = NULL,
+                                   batchsize = NULL,
+                                   trainlayers = NULL) {
+
+   monitoring <- asDSVectorArg(monitoring)
+   monitoringdata <- asDSVectorArg(monitoringdata)
+   trainlayers <- asDSVectorArg(trainlayers)
+   nhiddens <- asDSVectorArg(nhiddens)
+
+   cally <- call('monitored_stackrbmsDS', newobj = newobj, data = data,
+                 monitoring = monitoring,
+                 monitoringdata = monitoringdata,
+                 # keyword arguments for stackrbms
+                 nhiddens = nhiddens,
+                 epochs = epochs,
+                 predbm = predbm,
+                 samplehidden = samplehidden,
+                 learningrate = learningrate,
+                 batchsize = batchsize,
+                 trainlayers = trainlayers)
 
    monitoringoutput <- datashield.aggregate(datasources, cally)
    return(monitoringoutput)
@@ -85,11 +120,11 @@ ds.defineLayer <- function(datasources, newobj,
                            cdsteps = NULL,
                            startrbm = NULL) {
 
-   learningrates <- as.dsVectorArg(learningrates)
-   sdlearningrates <- as.dsVectorArg(sdlearningrates)
-   nhidden <- as.dsVectorArg(nhidden)
-   nvisible <- as.dsVectorArg(nvisible)
-   categories <- as.dsVectorArg(categories)
+   learningrates <- asDSVectorArg(learningrates)
+   sdlearningrates <- asDSVectorArg(sdlearningrates)
+   nhidden <- asDSVectorArg(nhidden)
+   nvisible <- asDSVectorArg(nvisible)
+   categories <- asDSVectorArg(categories)
 
    cally <- call("defineLayerDS", newobj,
                  epochs = epochs,

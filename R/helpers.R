@@ -1,4 +1,4 @@
-as.dsVectorArg <- function (x) {
+asDSVectorArg <- function (x) {
    if (!is.null(x)) {
       x <- paste0(as.character(x), collapse = ",")
    }
