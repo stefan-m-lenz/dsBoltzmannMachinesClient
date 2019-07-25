@@ -14,8 +14,8 @@ ds.splitdata(o, "D", 0.1, "D.Train", "D.Test")
 ds.defineLayer(o, newobj = "t1", nhidden = 1, epochs = 5)
 result <- ds.monitored_fitrbm(o, data = "D.Train", monitoringdata = "D.Test", learningrate = 0.001, epochs = 2) # fast test
 ds.splitdata(o, "D.Train", 0.11, "D.Train2", "D.Test2")
-result <- ds.monitored_fitrbm(o, data = "D.Train", monitoring = "reconstructionerror",
-                              monitoringdata = "D.Test", learningrate = 0.001, epochs = 2) # fast test
+result <- ds.monitored_fitrbm(o, data = "D.Train2", monitoring = "reconstructionerror",
+                              monitoringdata = c("D.Test", "D.Test2"), learningrate = 0.001, epochs = 2)
 plotEvaluation(result[[1]])
 
 result <- ds.monitored_fitrbm(o, data = "D.Train",
