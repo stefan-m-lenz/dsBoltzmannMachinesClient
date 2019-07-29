@@ -8,7 +8,10 @@ logindata <- data.frame(server = "server",
                         user = "user",
                         password = "password",
                         table ="50bin.x")
+
 o <- datashield.login(logins = logindata, assign = TRUE)
+ds.monitored_fitdbm(o, data ="D", epochs = 10)
+datashield.logout(o)
 
 ds.splitdata(o, "D", 0.1, "D.Train", "D.Test")
 ds.defineLayer(o, newobj = "t1", nhidden = 1, epochs = 5)
@@ -36,7 +39,7 @@ ds.samples(datasources = o, bm = "rbm", nsamples = 5, burnin = 100)
 
 result <- ds.monitored_fitrbm(o, data = "D.Train", monitoring = NULL)
 
-o <- datashield.login(logins = logindata, assign = TRUE)
+
 result <- ds.monitored_stackrbms(o)
 plotEvaluation(result[[1]][[2]])
 result <- ds.monitored_stackrbms(o, nhiddens = c(6,5,4), epochs = 15, predbm = TRUE, learningrate = 0.01, batchsize = 5)
@@ -44,11 +47,13 @@ plotEvaluation(result[[1]][[3]])
 result <- ds.monitored_stackrbms(o, monitoring = NULL)
 result <- ds.monitored_stackrbms(o, monitoring = c("reconstructionerror", "loglikelihood"), nhiddens = c(5,2))
 plotEvaluation(result[[1]][[1]])
-datashield.logout(o)
+
 
 ds.monitored_fitrbm(o, data = "D", learningrates = rep(0.001, 10), epochs = 10)
 ds.monitored_fitrbm(o, data = "D", epochs = 10, newobj = "rbm1")
 ds.monitored_fitrbm(o, data = "D", startrbm = "rbm1")
+
+
 
 
 

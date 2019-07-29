@@ -75,6 +75,48 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 }
 
 
+ds.monitored_fitdbm <- function(datasources, newobj = "dbm", data = "D",
+                                monitoring = "logproblowerbound",
+                                monitoringdata = data,
+                                monitoringpretraining = "reconstructionerror",
+                                monitoringdatapretraining = monitoringdata,
+                                nhiddens = NULL,
+                                epochs = NULL,
+                                nparticles = NULL,
+                                learningrate = NULL,
+                                learningrates = NULL,
+                                learningratepretraining = NULL,
+                                epochspretraining = NULL,
+                                batchsizepretraining = NULL,
+                                pretraining = NULL) {
+
+   monitoring <- asDSVectorArg(monitoring)
+   monitoringpretraining <- asDSVectorArg(monitoringpretraining)
+   monitoringdata <- asDSVectorArg(monitoringdata)
+   monitoringdatapretraining <- asDSVectorArg(monitoringdatapretraining)
+   pretraining <- asDSVectorArg(pretraining)
+   nhiddens <- asDSVectorArg(nhiddens)
+   learningrates <- asDSVectorArg(learningrates)
+
+   cally <- call('monitored_fitdbmDS', newobj = newobj, data = data,
+                 monitoring = monitoring,
+                 monitoringdata = monitoringdata,
+                 monitoringpretraining = monitoringpretraining,
+                 monitoringdatapretraining = monitoringdatapretraining,
+                 # keyword arguments for stackrbms
+                 nparticles = nparticles,
+                 learningrate = learningrate,
+                 learningrates = learningrates,
+                 learningratepretraining = learningratepretraining,
+                 epochspretraining = epochspretraining,
+                 batchsizepretraining = batchsizepretraining,
+                 pretraining = pretraining)
+
+   monitoringoutput <- datashield.aggregate(datasources, cally)
+   return(monitoringoutput)
+}
+
+
 ds.splitdata <- function(datasources, data, ratio, newobj1, newobj2) {
    cally <- call("splitdataDS", data, ratio, newobj1, newobj2)
    datashield.aggregate(datasources, cally)
