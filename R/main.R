@@ -14,13 +14,9 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                                 rbmtype = NULL,
                                 startrbm = NULL) {
 
-   monitoring <- asDSVectorArg(monitoring)
-   learningrates <- asDSVectorArg(learningrates)
-   monitoringdata <- asDSVectorArg(monitoringdata)
-
    cally <- call('monitored_fitrbmDS', newobj = newobj, data = data,
-                 monitoring = monitoring,
-                 monitoringdata = monitoringdata,
+                 monitoring = asDSVectorArg(monitoring),
+                 monitoringdata = asDSVectorArg(monitoringdata),
                  # keyword arguments for fitrbm
                  # (The  order is important (must be same as in server package)
                  # -  Bug in Opal?)
@@ -29,7 +25,7 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                  upfactor = upfactor,
                  downfactor = downfactor,
                  learningrate = learningrate,
-                 learningrates = learningrates,
+                 learningrates = asDSVectorArg(learningrates),
                  pcd = pcd,
                  cdsteps = cdsteps,
                  batchsize = batchsize,
@@ -53,22 +49,17 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
                                    batchsize = NULL,
                                    trainlayers = NULL) {
 
-   monitoring <- asDSVectorArg(monitoring)
-   monitoringdata <- asDSVectorArg(monitoringdata)
-   trainlayers <- asDSVectorArg(trainlayers)
-   nhiddens <- asDSVectorArg(nhiddens)
-
    cally <- call('monitored_stackrbmsDS', newobj = newobj, data = data,
-                 monitoring = monitoring,
-                 monitoringdata = monitoringdata,
+                 monitoring = asDSVectorArg(monitoring),
+                 monitoringdata = asDSVectorArg(monitoringdata),
                  # keyword arguments for stackrbms
-                 nhiddens = nhiddens,
+                 nhiddens = asDSVectorArg(nhiddens),
                  epochs = epochs,
                  predbm = predbm,
                  samplehidden = samplehidden,
                  learningrate = learningrate,
                  batchsize = batchsize,
-                 trainlayers = trainlayers)
+                 trainlayers = asDSVectorArg(trainlayers))
 
    monitoringoutput <- datashield.aggregate(datasources, cally)
    return(monitoringoutput)
@@ -90,27 +81,21 @@ ds.monitored_fitdbm <- function(datasources, newobj = "dbm", data = "D",
                                 batchsizepretraining = NULL,
                                 pretraining = NULL) {
 
-   monitoring <- asDSVectorArg(monitoring)
-   monitoringpretraining <- asDSVectorArg(monitoringpretraining)
-   monitoringdata <- asDSVectorArg(monitoringdata)
-   monitoringdatapretraining <- asDSVectorArg(monitoringdatapretraining)
-   pretraining <- asDSVectorArg(pretraining)
-   nhiddens <- asDSVectorArg(nhiddens)
-   learningrates <- asDSVectorArg(learningrates)
-
    cally <- call('monitored_fitdbmDS', newobj = newobj, data = data,
-                 monitoring = monitoring,
-                 monitoringdata = monitoringdata,
-                 monitoringpretraining = monitoringpretraining,
-                 monitoringdatapretraining = monitoringdatapretraining,
-                 # keyword arguments for stackrbms
+                 monitoring = asDSVectorArg(monitoring),
+                 monitoringdata = asDSVectorArg(monitoringdata),
+                 monitoringpretraining = asDSVectorArg(monitoringpretraining),
+                 monitoringdatapretraining = asDSVectorArg(monitoringdatapretraining),
+                 # keyword arguments for fitdbm
+                 nhiddens = asDSVectorArg(nhiddens),
+                 epochs = epochs,
                  nparticles = nparticles,
                  learningrate = learningrate,
-                 learningrates = learningrates,
+                 learningrates = asDSVectorArg(learningrates),
                  learningratepretraining = learningratepretraining,
                  epochspretraining = epochspretraining,
                  batchsizepretraining = batchsizepretraining,
-                 pretraining = pretraining)
+                 pretraining = asDSVectorArg(pretraining))
 
    monitoringoutput <- datashield.aggregate(datasources, cally)
    return(monitoringoutput)
@@ -139,8 +124,8 @@ ds.samples <- function(datasources, bm, nsamples,
 
    cally <- call("samplesDS", bm, nsamples,
                  burnin = burnin,
-                 conditionIndex = conditionIndex,
-                 conditionValue = conditionValue,
+                 conditionIndex = asDSVectorArg(conditionIndex),
+                 conditionValue = asDSVectorArg(conditionValue),
                  samplelast = samplelast)
    datashield.aggregate(datasources, cally)
 }

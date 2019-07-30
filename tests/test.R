@@ -10,7 +10,8 @@ logindata <- data.frame(server = "server",
                         table ="50bin.x")
 
 o <- datashield.login(logins = logindata, assign = TRUE)
-ds.monitored_fitdbm(o, data ="D", epochs = 10)
+ds.monitored_fitdbm(o, data ="D", epochs = 10) # TODO test with more arguments
+#ds.samples(o, bm = "dbm", conditionIndex = c(1,2), conditionvalue=c(1,1))
 datashield.logout(o)
 
 ds.splitdata(o, "D", 0.1, "D.Train", "D.Test")
