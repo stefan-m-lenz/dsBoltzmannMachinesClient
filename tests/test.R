@@ -14,6 +14,15 @@ ds.samples(o, bm = "dbm", nsamples = 5, conditionIndex = c(1,2), conditionValue=
 ds.defineLayer(o, newobj = "layer1", nhidden = 5, epochs = 20)
 ds.defineLayer(o, newobj = "layer2", nhidden = 4, epochs = 10)
 result <- ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"), epochs = 21)
+
+ds.defineLayer(o, "layer1_1", nhidden = 10, nvisible = 20)
+ds.defineLayer(o, "layer1_2", nhidden = 10, nvisible = 30)
+ds.definePartitionedLayer(o, "layer1", c("layer1_1", "layer1_2"))
+ds.defineLayer(o, "layer2", nhidden = 10, nvisible = 20)
+result <- ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"), epochs = 21)
+plotMonitoring(result)
+datashield.logout(o)
+
 plotMonitoring(result)
 
 ds.splitdata(o, "D", 0.1, "D.Train", "D.Test")
@@ -62,4 +71,4 @@ ds.monitored_fitrbm(o, data = "D", startrbm = "rbm1")
 
 result <- ds.monitored_fitrbm(o, data = "D", epochs = 100, batchsize = 10, pcd = FALSE)
 plotMonitoring(result)
-datashield.logout(o)
+

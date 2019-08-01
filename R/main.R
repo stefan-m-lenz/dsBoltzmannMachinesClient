@@ -155,27 +155,29 @@ ds.defineLayer <- function(datasources, newobj,
                            cdsteps = NULL,
                            startrbm = NULL) {
 
-   learningrates <- asDSVectorArg(learningrates)
-   sdlearningrates <- asDSVectorArg(sdlearningrates)
-   nhidden <- asDSVectorArg(nhidden)
-   nvisible <- asDSVectorArg(nvisible)
-   categories <- asDSVectorArg(categories)
-
    cally <- call("defineLayerDS", newobj,
                  epochs = epochs,
                  learningrate = learningrate,
-                 learningrates = learningrates,
+                 learningrates = asDSVectorArg(learningrates),
                  sdlearningrate = sdlearningrate,
-                 sdlearningrates = sdlearningrates,
-                 categories = categories,
+                 sdlearningrates = asDSVectorArg(sdlearningrates),
+                 categories = asDSVectorArg(categories),
                  rbmtype = rbmtype,
-                 nhidden = nhidden,
-                 nvisible = nvisible,
+                 nhidden = asDSVectorArg(nhidden),
+                 nvisible = asDSVectorArg(nvisible),
                  batchsize = batchsize,
                  pcd = pcd,
                  cdsteps = cdsteps,
                  startrbm = startrbm)
 
+   datashield.aggregate(datasources, cally)
+   invisible()
+}
+
+
+ds.definePartitionedLayer <- function (datasources, newobj, parts) {
+   parts <- asDSVectorArg(parts)
+   cally <- call("definePartitionedLayerDS", newobj, parts)
    datashield.aggregate(datasources, cally)
    invisible()
 }
