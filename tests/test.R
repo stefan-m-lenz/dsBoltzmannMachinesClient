@@ -8,8 +8,13 @@ logindata <- data.frame(server = "server",
                         table ="50bin.x")
 
 o <- datashield.login(logins = logindata, assign = TRUE)
-ds.monitored_fitdbm(o, data ="D", epochs = 2) # TODO test with more arguments
-result <- ds.monitored_fitdbm(o, data ="D", epochs = 10, epochspretraining = 20)
+ds.monitored_fitdbm(o, data ="D", epochs = 2)
+ds.setJuliaSeed(o, 1)
+result <- ds.monitored_fitdbm(o, data ="D", epochs = 10, epochspretraining = 20, nhiddens = c(50, 25, 15))
+plotMonitoring(result)
+comps <- ds.dbm2TopLatentDims(o)
+plot(comps[[1]][,1], comps[[1]][,2])
+
 ds.samples(o, bm = "dbm", nsamples = 5, conditionIndex = c(1,2), conditionValue=c(1,1))
 ds.defineLayer(o, newobj = "layer1", nhidden = 5, epochs = 20)
 ds.defineLayer(o, newobj = "layer2", nhidden = 4, epochs = 10)
