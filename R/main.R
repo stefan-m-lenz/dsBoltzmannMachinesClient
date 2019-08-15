@@ -147,7 +147,7 @@ ds.bm.samples <- function(datasources, bm, nsamples,
 }
 
 
-ds.defineLayer <- function(datasources, newobj,
+ds.bm.defineLayer <- function(datasources, newobj,
                            epochs = NULL,
                            learningrate = NULL,
                            learningrates = NULL,
@@ -183,7 +183,7 @@ ds.defineLayer <- function(datasources, newobj,
 }
 
 
-ds.definePartitionedLayer <- function (datasources, newobj, parts) {
+ds.bm.definePartitionedLayer <- function (datasources, newobj, parts) {
    parts <- asDSVectorArg(parts)
    cally <- call("definePartitionedLayerDS", newobj, parts)
    datashield.aggregate(datasources, cally)
@@ -191,7 +191,7 @@ ds.definePartitionedLayer <- function (datasources, newobj, parts) {
 }
 
 
-ds.dbm2TopLatentDims <- function(datasources, dbm = "dbm", data = "D") {
+ds.dbm.top2LatentDims <- function(datasources, dbm = "dbm", data = "D") {
    cally <- call("dbm2TopLatentDimsDS", dbm, data)
    datashield.aggregate(datasources, cally)
 }
