@@ -124,7 +124,15 @@ ds.setJuliaSeed <- function(datasources, seed) {
 }
 
 
-ds.samples <- function(datasources, bm, nsamples,
+ds.rbm.samples <- function(datasources, rbm = "rbm", ...) {
+   ds.bm.samples(datasources = datasources, bm = rbm, ...)
+}
+
+ds.dbm.samples <- function(datasources, dbm = "dbm", ...) {
+   ds.bm.samples(datasources = datasources, bm = dbm, ...)
+}
+
+ds.bm.samples <- function(datasources, bm, nsamples,
                        burnin = NULL,
                        conditionIndex = NULL,
                        conditionValue = NULL,

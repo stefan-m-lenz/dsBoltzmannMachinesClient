@@ -8,14 +8,14 @@ logindata <- data.frame(server = "server",
                         table ="50bin.x")
 
 o <- datashield.login(logins = logindata, assign = TRUE)
-ds.monitored_fitdbm(o, data ="D", epochs = 2)
+result <- ds.monitored_fitdbm(o, data ="D", epochs = 2,nhiddens = c(2,2))
 ds.setJuliaSeed(o, 1)
-result <- ds.monitored_fitdbm(o, data ="D", epochs = 10, epochspretraining = 20, nhiddens = c(50, 25, 15))
+result <- ds.monitored_fitdbm(datasources = o, data ="D", epochs = 10, epochspretraining = 20, nhiddens = c(50, 25, 15))
 plotMonitoring(result)
 comps <- ds.dbm2TopLatentDims(o)
 plot(comps[[1]][,1], comps[[1]][,2])
 
-ds.samples(o, bm = "dbm", nsamples = 5, conditionIndex = c(1,2), conditionValue=c(1,1))
+ds.dbm.samples(o, nsamples = 5, conditionIndex = c(1,2), conditionValue=c(1,1))
 ds.defineLayer(o, newobj = "layer1", nhidden = 5, epochs = 20)
 ds.defineLayer(o, newobj = "layer2", nhidden = 4, epochs = 10)
 result <- ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"), epochs = 21)
@@ -45,6 +45,7 @@ result <- ds.monitored_fitrbm(o, data = "D.Train",
                               monitoringdata = c("D.Train", "D.Test"),
                               monitoring = "exactloglikelihood",
                               nhidden = 2, learningrate = 0.005, epochs = 25)
+ds.rbm.samples(o, nsamples = 5)
 ds.setJuliaSeed(o, 5)
 result <- ds.monitored_fitrbm(o, data = "D.Train",
                               monitoringdata = c("D.Train", "D.Test"),
