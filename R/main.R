@@ -191,7 +191,7 @@ ds.bm.definePartitionedLayer <- function (datasources, newobj, parts) {
 }
 
 
-ds.dbm.top2LatentDims <- function(datasources, dbm = "dbm", data = "D") {
-   cally <- call("dbm2TopLatentDimsDS", dbm, data)
+ds.dbm.top2LatentDims <- function(datasources, dbm = "dbm", data = "D", nparticles, burnin) {
+   cally <- call("dbm2TopLatentDimsDS", dbm, data, nparticles, burnin)
    datashield.aggregate(datasources, cally)
 }
