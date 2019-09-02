@@ -7,6 +7,6 @@ Maintainer: Stefan Lenz <lenz@imbi.uni-freiburg.de>
 Description: Calls the package dsBoltzmannMachines to train and use 
     restricted and deep Boltzmann machines on a DataSHIELD server.
 License: MIT
-Depends: opal
+Depends: opal, BoltzmannMachinesRPlots
 Encoding: UTF-8
 LazyData: true
