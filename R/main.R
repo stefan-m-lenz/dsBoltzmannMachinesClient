@@ -195,3 +195,61 @@ ds.dbm.top2LatentDims <- function(datasources, dbm = "dbm", data = "D") {
    cally <- call("dbm2TopLatentDimsDS", dbm, data)
    datashield.aggregate(datasources, cally)
 }
+
+
+ds.rbm.loglikelihood <- function(datasources, rbm = "rbm", data = "D",
+                                 parallelized = NULL,
+                                 ntemperatures = NULL,
+                                 nparticles = NULL,
+                                 burnin = NULL) {
+   cally <- call("rbm.loglikelihoodDS", rbm, data,
+                 parallelized = parallelized,
+                 ntemperatures = ntemperatures,
+                 nparticles = nparticles,
+                 burnin = burnin)
+   datashield.aggregate(datasources, cally)
+}
+
+
+ds.dbm.loglikelihood <- function(datasources, dbm = "dbm", data = "D",
+                                 parallelized = NULL,
+                                 ntemperatures = NULL,
+                                 nparticles = NULL,
+                                 burnin = NULL) {
+   cally <- call("dbm.loglikelihoodDS", dbm, data,
+                 parallelized = parallelized,
+                 ntemperatures = ntemperatures,
+                 nparticles = nparticles,
+                 burnin = burnin)
+   datashield.aggregate(datasources, cally)
+}
+
+
+ds.dbm.logproblowerbound <- function(datasources, dbm = "dbm", data = "D",
+                                     parallelized = NULL,
+                                     ntemperatures = NULL,
+                                     nparticles = NULL,
+                                     burnin = NULL) {
+   cally <- call("dbm.logproblowerboundDS", dbm, data,
+                 parallelized = parallelized,
+                 ntemperatures = ntemperatures,
+                 nparticles = nparticles,
+                 burnin = burnin)
+   datashield.aggregate(datasources, cally)
+}
+
+
+ds.bm.exactloglikelihood <- function(datasources, bm, data = "D") {
+   cally <- call("bm.exactloglikelihoodDS", bm, data)
+   datashield.aggregate(datasources, cally)
+}
+
+
+ds.rbm.exactloglikelihood <- function(datasources, rbm = "rbm", data = "D") {
+   ds.bm.exactloglikelihood(datasources, bm = rbm, data)
+}
+
+
+ds.dbm.exactloglikelihood <- function(datasources, dbm = "dbm", data = "D") {
+   ds.bm.exactloglikelihood(datasources, bm = dbm, data)
+}

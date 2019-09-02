@@ -1,5 +1,3 @@
-library(BoltzmannMachinesRPlots)
-
 library(dsBoltzmannMachinesClient)
 logindata <- data.frame(server = "server",
                         url = "http://10.5.10.57:8080",
@@ -9,8 +7,11 @@ logindata <- data.frame(server = "server",
 
 o <- datashield.login(logins = logindata, assign = TRUE)
 result <- ds.monitored_fitdbm(o, data ="D", epochs = 2,nhiddens = c(2,2))
-ds.setJuliaSeed(o, 1)
-result <- ds.monitored_fitdbm(datasources = o, data ="D", epochs = 10, epochspretraining = 20, nhiddens = c(50, 25, 15))
+ds.setJuliaSeed(o, 1) # for reproducibility
+result <- ds.monitored_fitdbm(datasources = o, data ="D", nhiddens = c(50, 25, 15),
+                              epochs = 10,
+                              epochspretraining = 20)
+
 plotMonitoring(result)
 comps <- ds.dbm.top2LatentDims(o)
 plot(comps[[1]][,1], comps[[1]][,2])
@@ -78,3 +79,25 @@ ds.monitored_fitrbm(o, data = "D", startrbm = "rbm1")
 result <- ds.monitored_fitrbm(o, data = "D", epochs = 100, batchsize = 10, pcd = FALSE)
 plotMonitoring(result)
 
+# Test likelihood
+library(dsBaseClient)
+ds.subset("D", subset = "first5", cols = 1:5)
+ds.splitdata(o, "first5", 0.1, "D.Train", "D.Test")
+ds.monitored_fitdbm(o, data = "first5", nhiddens = c(2,2))
+
+ds.dbm.exactloglikelihood(o, data = "D.Test")
+ds.dbm.logproblowerbound(o, data = "D.Test")
+ds.dbm.logproblowerbound(o, data = "D.Test", nparticles = 50, burnin = 10, ntemperatures = 50, parallelized = TRUE)
+ds.dbm.loglikelihood(o, data = "D.Test")
+ds.dbm.loglikelihood(o, data = "D.Test", nparticles = 50, burnin = 10, ntemperatures = 50, parallelized = TRUE)
+
+ds.monitored_fitrbm(o, data = "first5", nhidden = 2)
+ds.rbm.exactloglikelihood(o, data = "D.Test")
+ds.rbm.loglikelihood(o, data = "D.Test")
+ds.rbm.loglikelihood(o, data = "D.Test", nparticles = 50, burnin = 10, ntemperatures = 50, parallelized = TRUE)
+
+
+# TODO Softmax0BernoulliRBM
+ds.bm.defineLayer(o, "layer1", nhidden = 4, rbmtype = "Softmax0BernoulliRBM", categories = 2)
+ds.bm.defineLayer(o, "layer2", nhidden = 4)
+ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"))
