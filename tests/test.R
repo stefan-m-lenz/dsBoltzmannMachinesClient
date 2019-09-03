@@ -27,9 +27,7 @@ ds.bm.definePartitionedLayer(o, "layer1", c("layer1_1", "layer1_2"))
 ds.bm.defineLayer(o, "layer2", nhidden = 10, nvisible = 20)
 result <- ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"), epochs = 21)
 plotMonitoring(result)
-datashield.logout(o)
 
-plotMonitoring(result)
 
 ds.splitdata(o, "D", 0.1, "D.Train", "D.Test")
 
@@ -97,7 +95,11 @@ ds.rbm.loglikelihood(o, data = "D.Test")
 ds.rbm.loglikelihood(o, data = "D.Test", nparticles = 50, burnin = 10, ntemperatures = 50, parallelized = TRUE)
 
 
-# TODO Softmax0BernoulliRBM
+# TODO data preprocessing for Softmax0BernoulliRBM
 ds.bm.defineLayer(o, "layer1", nhidden = 4, rbmtype = "Softmax0BernoulliRBM", categories = 2)
 ds.bm.defineLayer(o, "layer2", nhidden = 4)
 ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"))
+
+ds.monitored_fitrbm(o, nhidden = 4, rbmtype = "Softmax0BernoulliRBM", categories = 2)
+
+datashield.logout(o)

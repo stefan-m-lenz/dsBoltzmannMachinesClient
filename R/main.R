@@ -6,6 +6,59 @@ asDSVectorArg <- function (x) {
 }
 
 
+#' Fit an RBM model
+#'
+#' Fits an RBM model using Stochastic Gradient Descent (SGD) on the \code{data}
+#' with Contrastive Divergence (CD).
+#' During the training, monitoring data is collected by default.
+#' The monitoring data is returned to the user.
+#' The trained model is stored on the server side (see parameter \code{newobj}).
+#'
+#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' by an administratorat the server side, the models themselves are returned in addition.
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
+#' @param newobj The name for the variable, in which the trained RBM will be stored.
+#'    Defaults to \code{"rbm"}
+#' @param monitoring Name for monitoring options used for RBM training.
+#'    Possible options:
+#'    \itemize{
+#'    \item \code{"reconstructionerror"}: Calculates the reconstruction error (Default)
+#'    \item \code{"loglikelihood"}: Estimates the loglikelihood via annealed importance sampling (AIS)
+#'    \item \code{"exactloglikelihood"}: Exact calculation of log-likelihood.
+#'    This is only feasible for very small models.
+#'    \item \code{NULL}: No monitoring
+#'    }
+#' @param monitoringdata A vector of names for server-side data sets that are to be used for
+#'    monitoring
+#' @param rbmtype the type of the RBM that is to be trained
+#'    This must be a subtype of \code{AbstractRBM} and defaults to \code{BernoulliRBM}.
+#' @param nhidden number of hidden units for the returned RBM
+#' @param epochs number of training epochs
+#' @param learningrate The learning rate for the weights and biases
+#'    can be specified as single value, used throughout all epochs. Defaults to 0.005.
+#' @param learningrates The learning rate for the weights and biases
+#'    can also be specified as a vector that contains a value for each epoch.
+#' @param batchsize number of samples that are used for making one step in the
+#'    stochastic gradient descent optimizer algorithm. Default is 1.
+#' @param pcd indicating whether Persistent Contrastive Divergence (PCD) is to
+#'    be used (true, default) or simple CD that initializes the Gibbs Chain with
+#'    the training sample (false)
+#' @param cdsteps number of Gibbs sampling steps for (persistent)
+#'    contrastive divergence, defaults to 1
+#' @param categories only relevant if \code{rbmtype} is \code{"Softmax0BernoulliRBM"}.
+#'   The number of categories, if all variables have the same number
+#'   of categories, or as vector that contains the number of categories
+#'   of the i'th categorical variable in the i'th entry.
+#' @param upfactor If this function is used e.g. for pretraining a part of
+#'    a DBM, it is necessary to multiply the weights of the RBM with factors.
+#' @param downfactor If this function is used e.g. for pretraining a part of
+#'    a DBM, it is necessary to multiply the weights of the RBM with factors.
+#' @param startrbm a name for an RBM object at the server side that
+#'    is used as starting value for training.
+#'    If this argument is specified, \code{nhidden} and \code{rbmtype} are ignored.
 ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                                 monitoring = "reconstructionerror",
                                 monitoringdata = NULL,
@@ -18,6 +71,7 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                                 learningrates = NULL,
                                 pcd = NULL,
                                 cdsteps = NULL,
+                                categories = NULL,
                                 batchsize = NULL,
                                 rbmtype = NULL,
                                 startrbm = NULL) {
@@ -36,15 +90,54 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                  learningrates = asDSVectorArg(learningrates),
                  pcd = pcd,
                  cdsteps = cdsteps,
+                 categories = asDSVectorArg(categories),
                  batchsize = batchsize,
                  rbmtype = rbmtype,
                  startrbm = startrbm)
 
-   monitoringoutput <- datashield.aggregate(datasources, cally)
-   return(monitoringoutput)
+   return(datashield.aggregate(datasources, cally))
 }
 
 
+#' Train a stack of RBMs
+#'
+#' Performs greedy layerwise training for Deep Belief Networks or greedy layerwise
+#' pretraining for Deep Boltzmann Machines.
+#' During the training, monitoring data is collected by default.
+#' The monitoring data is returned to the user.
+#' The trained model is stored on the server side (see parameter \code{newobj}).
+#'
+#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' by an administratorat the server side, the models themselves are returned in addition.
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
+#' @param newobj The name for the variable, in which the trained RBM will be stored.
+#'    Defaults to \code{"rbmstack"}
+#' @param monitoring Name for monitoring options used for RBM training.
+#'    For possible options, see \code{\link{ds.monitored_fitrbm}}
+#' @param monitoringdata A vector of names for server-side data sets that are to be used for
+#'    monitoring. The data is propagated forward through the
+#'    network to monitor higher levels.
+#' @param predbm logical value indicating that the greedy layerwise training is
+#'    pre-training for a DBM.
+#'    If its value is \code{FALSE} (default), a DBN is trained.
+#' @param nhiddens vector containing the number of nodes of the i'th hidden layer in
+#'    the i'th entry
+#' @param epochs number of training epochs
+#' @param learningrate learningrate, default 0.005
+#' @param batchsize size of minibatches, defaults to 1
+#' @param trainlayers a vector of names for \code{TrainLayer} objects.
+#'    With this argument it is possible
+#'    to specify the training parameters for each layer/RBM individually.
+#'    If the number of training epochs and the learning rate are not specified
+#'    explicitly for a layer, the values of \code{epochs}, \code{learningrate}
+#'    and \code{batchsize} are used.
+#'    For more information see help of \code{\link{ds.bm.defineLayer}}.
+#' @param samplehidden logical value indicating that consequent layers are to be trained
+#'    with sampled values instead of the deterministic potential.
+#'    Using the deterministic potential (\code{FALSE}) is the default.
 ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
                                    monitoring = "reconstructionerror",
                                    monitoringdata = NULL,
@@ -69,8 +162,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
                  batchsize = batchsize,
                  trainlayers = asDSVectorArg(trainlayers))
 
-   monitoringoutput <- datashield.aggregate(datasources, cally)
-   return(monitoringoutput)
+   return(datashield.aggregate(datasources, cally))
 }
 
 
@@ -78,7 +170,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #'
 #' The procedure for DBM fitting consists of two parts:
 #' First a stack of RBMs is pretrained in a greedy layerwise manner
-#' (see \code{\link{`monitored_stackrbms`}}). Then the weights of all layers are jointly
+#' (see \code{\link{ds.monitored_stackrbms}}). Then the weights of all layers are jointly
 #' trained using the general Boltzmann Machine learning procedure.
 #' During pre-training and fine-tuning, monitoring data is collected by default.
 #' The monitoring data is returned to the user.
@@ -87,7 +179,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
 #' by an administratorat the server side, the models themselves are returned in addition.
 #'
-#' @param datasources a list of Opal object(s) as a handle to the server-side session
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
 #' @param newobj The name for the variable, in which the trained DBM will be stored.
 #'    Defaults to \code{"dbm"}
 #' @param data The name of the variable that holds the data on the server-side.
@@ -120,7 +212,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #'    \code{learningratepretraining} and \code{batchsizepretraining} are used.
 #' @param monitoring Name for monitoring options used for monitoring the fine-tuning.
 #'    Possible options:
-#'    \enumerate{
+#'    \itemize{
 #'    \item \code{"logproblowerbound"}: Variational lower bound of log probability (Default)
 #'    \item \code{"exactloglikelihood"}: Exact calculation of log-likelihood.
 #'    This is only feasible for very small models.
@@ -128,7 +220,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #'    }
 #' @param monitoringpretraining Name for monitoring options used for monitoring the pre-training.
 #'    The options are the same as for
-#'    training an RBM (see \code{\link{monitored_fitrbm}}).
+#'    training an RBM (see \code{\link{ds.monitored_fitrbm}}).
 #'    By default, the reconstruction error is monitored.
 #' @param monitoringdata A vector of names for server-side data sets that are to be used for
 #'    monitoring
@@ -165,8 +257,7 @@ ds.monitored_fitdbm <- function(datasources, newobj = "dbm", data = "D",
                  batchsizepretraining = batchsizepretraining,
                  pretraining = asDSVectorArg(pretraining))
 
-   monitoringoutput <- datashield.aggregate(datasources, cally)
-   return(monitoringoutput)
+   return(datashield.aggregate(datasources, cally))
 }
 
 
@@ -176,7 +267,7 @@ ds.monitored_fitdbm <- function(datasources, newobj = "dbm", data = "D",
 #' the fraction of samples in \eqn{x_2} is equal to (or as close as possible to) the
 #' given \code{ratio}.
 #'
-#' @param datasources a list of Opal object(s) as a handle to the server-side session
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
 #' @param data The name of the variable that holds the data on the server-side. Defaults to \code{"D"}.
 #' @param ratio The ratio of samples
 #' @param newobj1 Name for variable, where \eqn{x_1} is stored
@@ -228,7 +319,7 @@ ds.dbm.samples <- function(datasources, dbm = "dbm", ...) {
 #' \emph{conditional distribution}
 #' (see argument `conditionIndex` and `conditionValue` below.)
 #'
-#' @param datasources TODO
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
 #' @param bm The name of the model to sample from on the server-side
 #' @param nsamples Number of samples to generate
 #' @param burnin Number of Gibbs sampling steps, defaults to 50.
@@ -259,13 +350,13 @@ ds.bm.samples <- function(datasources, bm, nsamples,
 #' The parameters \code{rbmtype}, \code{nhidden}, \code{epochs},
 #'   \code{learningrate}/\code{learningrates}, \code{categories},
 #'   \code{batchsize}, \code{pcd}, \code{cdsteps}, \code{startrbm} and \code{monitoring}
-#'   of this object are passed to \code{\link{monitored_fitrbm}}.
+#'   of this object are passed to \code{\link{ds.monitored_fitrbm}}.
 #'   For a detailed description, see there.
 #'   Values of \code{NULL} indicate that a corresponding default value should be used.
-#' @param datasources TODO
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
 #' @param newobj The name of the server-side object where the parameters are stored
 #' @param nvisible Number of visible units in the RBM. Only relevant for partitioning.
-#'    This parameter is derived as much as possible by \code{\link{monitored_stackrbms}}.
+#'    This parameter is derived as much as possible by \code{\link{ds.monitored_stackrbms}}.
 #'    For multimodal DBMs with a partitioned first layer, it is necessary to specify
 #'    the number of visible nodes for all but at most one partition in the input layer.
 ds.bm.defineLayer <- function(datasources, newobj,
@@ -309,7 +400,7 @@ ds.bm.defineLayer <- function(datasources, newobj,
 #' Creates an object at the server-side that encapsulates parameters for training
 #' a partitioned layer.
 #'
-#' @param datasources TODO
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
 #' @param newobj The name of the server-side object where the parameters are stored
 #' @param parts A vector with names for \code{TrainLayer} objects which have been created
 #'   by \code{\link{ds.bm.defineLayer}} before.
