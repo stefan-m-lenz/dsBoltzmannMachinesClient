@@ -10,3 +10,4 @@ License: MIT
 Depends: opal, BoltzmannMachinesRPlots
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1
