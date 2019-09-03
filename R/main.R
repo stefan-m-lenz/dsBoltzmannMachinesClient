@@ -95,7 +95,7 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
                  rbmtype = rbmtype,
                  startrbm = startrbm)
 
-   return(datashield.aggregate(datasources, cally))
+   datashield.aggregate(datasources, cally)
 }
 
 
@@ -162,7 +162,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
                  batchsize = batchsize,
                  trainlayers = asDSVectorArg(trainlayers))
 
-   return(datashield.aggregate(datasources, cally))
+   datashield.aggregate(datasources, cally)
 }
 
 
@@ -191,11 +191,12 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #' @param epochspretraining Number of training epochs for pretraining,
 #'    defaults to \code{epochs}
 #' @param learningrate
-#'    Learning rate for joint training of layers (= fine tuning)
+#'    Learning rate for joint training of layers (= fine-tuning)
 #'    using the learning algorithm for a general Boltzmann Machine.
 #'    The learning rate for fine tuning is by default decaying with the number of epochs,
 #'    starting with the given value for the \code{learningrate}.
-#'    (For more details see `traindbm!`).
+#'    By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.
+#' @param learningrates a vector of learning rates for each epoch of fine-tuning
 #' @param learningratepretraining Learning rate for pretraining,
 #'    defaults to \code{learningrate}
 #' @param batchsizepretraining Batchsize for pretraining, defaults to 1
@@ -257,7 +258,7 @@ ds.monitored_fitdbm <- function(datasources, newobj = "dbm", data = "D",
                  batchsizepretraining = batchsizepretraining,
                  pretraining = asDSVectorArg(pretraining))
 
-   return(datashield.aggregate(datasources, cally))
+   datashield.aggregate(datasources, cally)
 }
 
 
@@ -411,13 +412,38 @@ ds.bm.definePartitionedLayer <- function (datasources, newobj, parts) {
    invisible()
 }
 
-
+#' Two-dimensional representation of latent features
+#'
+#' Calculates the mean-field approximation of the activation of the top hidden nodes in
+#' the DBM. If there are more than two nodes in the top layer, the activation is further
+#' reduced in dimensionality using a PCA.
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param dbm The name of the DBM model on the server-side. Defaults to \code{"dbm"}.
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
+#' @return A matrix with two columns for each of the sites,
+#'   containing the two-dimensional representation for
+#'   each of the samples in the rows. The samples are shuffled at random.
 ds.dbm.top2LatentDims <- function(datasources, dbm = "dbm", data = "D") {
    cally <- call("dbm2TopLatentDimsDS", dbm, data)
    datashield.aggregate(datasources, cally)
 }
 
 
+#' Likelihood  estimation for an RBM model
+#'
+#' Estimates the log-likelihood for an RBM model using annealed importance sampling (AIS)
+#' for estimating the partition function.
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param rbm The name of the RBM model on the server. Defaults to \code{"rbm"}.
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
+#' @param ntemperatures Number of temperatures for annealing from the starting model
+#'    to the target model, defaults to 100
+#' @param nparticles Number of parallel chains and calculated weights in AIS, defaults to 100
+#' @param burnin Number of steps to sample for the Gibbs transition between models in AIS
 ds.rbm.loglikelihood <- function(datasources, rbm = "rbm", data = "D",
                                  parallelized = NULL,
                                  ntemperatures = NULL,
@@ -432,6 +458,20 @@ ds.rbm.loglikelihood <- function(datasources, rbm = "rbm", data = "D",
 }
 
 
+#' Likelihood estimation for a DBM model
+#'
+#' Performs a separate run of annealed importance sampling (AIS)
+#' for each of the samples to estimate the log-likelihood of a DBM in addition to
+#' estimating the partition function.
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param dbm The name of the DBM model on the server-side. Defaults to \code{"dbm"}.
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
+#' @param ntemperatures Number of temperatures for annealing from the starting model
+#'    to the target model, defaults to 100
+#' @param nparticles Number of parallel chains and calculated weights in AIS, defaults to 100
+#' @param burnin Number of steps to sample for the Gibbs transition between models in AIS
 ds.dbm.loglikelihood <- function(datasources, dbm = "dbm", data = "D",
                                  parallelized = NULL,
                                  ntemperatures = NULL,
@@ -446,6 +486,19 @@ ds.dbm.loglikelihood <- function(datasources, dbm = "dbm", data = "D",
 }
 
 
+#' Estimation of Variational lower bound of log probability for a DBM model
+#'
+#' Estimates the variational lower bound of the likelihood of a DBM using
+#' annealed importance sampling (AIS).
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param rbm The name of the DBM model on the server-side. Defaults to \code{"dbm"}.
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
+#' @param ntemperatures Number of temperatures for annealing from the starting model
+#'    to the target model, defaults to 100
+#' @param nparticles Number of parallel chains and calculated weights in AIS, defaults to 100
+#' @param burnin Number of steps to sample for the Gibbs transition between models in AIS
 ds.dbm.logproblowerbound <- function(datasources, dbm = "dbm", data = "D",
                                      parallelized = NULL,
                                      ntemperatures = NULL,
@@ -460,17 +513,38 @@ ds.dbm.logproblowerbound <- function(datasources, dbm = "dbm", data = "D",
 }
 
 
+#' Exact calculation of the log-likelihood for a Boltzmann machine
+#'
+#' Calculates the log-likelihood of a Boltzmann machine model.
+#'
+#' \emph{This is only feasible for very small models, as the runtime grows exponentially with
+#' the number of hidden nodes.}
+#'
+#' @param datasources A list of Opal object(s) as a handle to the server-side session
+#' @param bm The name of the Boltzmann machine model on the server-side.
+#' @param data The name of the variable that holds the data on the server-side.
+#'    Defaults to \code{"D"}.
 ds.bm.exactloglikelihood <- function(datasources, bm, data = "D") {
    cally <- call("bm.exactloglikelihoodDS", bm, data)
    datashield.aggregate(datasources, cally)
 }
 
 
+#' Exact calculation of the log-likelihood for an RBM
+#'
+#' Same as \code{\link{ds.bm.exactloglikelihood}}, only with parameter \code{bm} changed to \code{rbm}.
+#'
+#' @param rbm The name of the model to sample from on the server-side. Defaults to \code{"rbm"}.
 ds.rbm.exactloglikelihood <- function(datasources, rbm = "rbm", data = "D") {
    ds.bm.exactloglikelihood(datasources, bm = rbm, data)
 }
 
 
+#' Exact calculation of the log-likelihood for a DBM
+#'
+#' Same as \code{\link{ds.bm.exactloglikelihood}}, only with parameter \code{bm} changed to \code{dbm}.
+#'
+#' @param dbm The name of the model to sample from on the server-side. Defaults to \code{"dbm"}.
 ds.dbm.exactloglikelihood <- function(datasources, dbm = "dbm", data = "D") {
    ds.bm.exactloglikelihood(datasources, bm = dbm, data)
 }

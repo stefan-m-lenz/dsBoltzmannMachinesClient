@@ -51,11 +51,13 @@ as the visible layer.}
 \item{nparticles}{Number of particles used for sampling during joint training of
 DBM, default 100}
 
-\item{learningrate}{Learning rate for joint training of layers (= fine tuning)
+\item{learningrate}{Learning rate for joint training of layers (= fine-tuning)
 using the learning algorithm for a general Boltzmann Machine.
 The learning rate for fine tuning is by default decaying with the number of epochs,
 starting with the given value for the \code{learningrate}.
-(For more details see `traindbm!`).}
+By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.}
+
+\item{learningrates}{a vector of learning rates for each epoch of fine-tuning}
 
 \item{learningratepretraining}{Learning rate for pretraining,
 defaults to \code{learningrate}}
