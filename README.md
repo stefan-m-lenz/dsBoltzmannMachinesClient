@@ -1,6 +1,6 @@
 # dsBoltzmannMachinesClient
 
-This is the client side R package for using Deep Boltzmann machines as generative models in [DataSHIELD](https://github.com/datashield).
+This is the client side R package for using Deep Boltzmann machines as generative models in [DataSHIELD](https://github.com/datashield). It depends on the [BoltzmannMachineRPlots](https://github.com/stefan-m-lenz/BoltzmannMachinesRPlots) package and on the basic DataSHIELD client package. 
 
 The corresponding server side R package is [dsBoltzmannMachines](https://github.com/stefan-m-lenz/dsBoltzmannMachines).
 
