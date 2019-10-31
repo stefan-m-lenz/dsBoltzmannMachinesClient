@@ -6,6 +6,11 @@ asDSVectorArg <- function (x) {
 }
 
 
+print.monitoringresult <- function(x) {
+   print("Monitoring output ... (not printed)")
+}
+
+
 #' Fit an RBM model
 #'
 #' Fits an RBM model using Stochastic Gradient Descent (SGD) on the \code{data}
@@ -108,7 +113,7 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
 #' The trained model is stored on the server side (see parameter \code{newobj}).
 #'
 #' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
-#' by an administratorat the server side, the models themselves are returned in addition.
+#' by an administrator at the server side, the model itself is returned in addition.
 #'
 #' @param datasources A list of Opal object(s) as a handle to the server-side session
 #' @param data The name of the variable that holds the data on the server-side.
@@ -166,6 +171,54 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 }
 
 
+#' Fine-Tuning of a DBM
+#'
+#' This functions performs monitored fine-tuning of a given DBM model.
+#' For the complete training, including the pre-training, see \code{\link{ds.monitored_fitdbm}}.
+#' During the training, monitoring data is collected by default.
+#' The monitoring data is returned to the user.
+#' The trained model is stored on the server side (see parameter \code{newobj}).
+#'
+#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' by an administrator at the server side, the model itself is returned in addition.
+#'
+#' @param dbm The name of DBM model that is to be fine-tuned. Defaults to \code{"dbm"}.
+#' @param newobj The name of the variable to store the new DBM model.
+#'    Defaults to \code{"dbm"}, such that the previous model is overwritten.
+#' @param monitoring Name for monitoring options used for DBM training.
+#'    For possible options, see \code{\link{ds.monitored_fitdbm}}
+#' @param monitoringdata A vector of names of server-side data sets that are to be used for
+#'    monitoring
+#' @param epochs Number of training epochs for fine-tuning, defaults to 10
+#' @param nparticles Number of particles used for sampling during fine-tuning of the
+#'    DBM, defaults to 100
+#' @param learningrate Learning rate for fine-tuning,
+#'    decaying by default decaying with the number of epochs,
+#'    starting with the given value for the \code{learningrate}.
+#'    By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.
+#' @param learningrates a vector of learning rates for each epoch of fine-tuning
+ds.monitored_traindbm <- function(datasources, dbm = "dbm",
+                                  newobj = "dbm", data = "D",
+                                  monitoring = "logproblowerbound",
+                                  monitoringdata = data,
+                                  epochs = NULL,
+                                  nparticles = NULL,
+                                  learningrate = NULL,
+                                  learningrates = NULL) {
+
+   cally <- call('monitored_traindbmDS', startdbm = dbm, newobj = newobj, data = data,
+                 monitoring = asDSVectorArg(monitoring),
+                 monitoringdata = asDSVectorArg(monitoringdata),
+                 # keyword arguments for traindbm!
+                 epochs = epochs,
+                 nparticles = nparticles,
+                 learningrate = learningrate,
+                 learningrates = asDSVectorArg(learningrates))
+
+   datashield.aggregate(datasources, cally)
+}
+
+
 #' Fits a (multimodal) DBM model
 #'
 #' The procedure for DBM fitting consists of two parts:
@@ -192,7 +245,8 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #'    defaults to \code{epochs}
 #' @param learningrate
 #'    Learning rate for joint training of layers (= fine-tuning)
-#'    using the learning algorithm for a general Boltzmann Machine.
+#'    using the learning algorithm for a general Boltzmann Machine
+#'    with mean-field approximation.
 #'    The learning rate for fine tuning is by default decaying with the number of epochs,
 #'    starting with the given value for the \code{learningrate}.
 #'    By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.
@@ -200,8 +254,8 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #' @param learningratepretraining Learning rate for pretraining,
 #'    defaults to \code{learningrate}
 #' @param batchsizepretraining Batchsize for pretraining, defaults to 1
-#' @param nparticles Number of particles used for sampling during joint training of
-#'    DBM, default 100
+#' @param nparticles Number of particles used for sampling during fine-tuning of the
+#'    DBM, defaults to 100
 #' @param pretraining The arguments for layerwise pretraining
 #'    can be specified for each layer individually.
 #'    This is done via a vector of names for objects that have previously been defined
@@ -211,7 +265,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #'    If the number of training epochs and the learning rate are not specified
 #'    explicitly for a layer, the values of \code{epochspretraining},
 #'    \code{learningratepretraining} and \code{batchsizepretraining} are used.
-#' @param monitoring Name for monitoring options used for monitoring the fine-tuning.
+#' @param monitoring Name(s) for the monitoring options used for monitoring the fine-tuning.
 #'    Possible options:
 #'    \itemize{
 #'    \item \code{"logproblowerbound"}: Variational lower bound of log probability (Default)

@@ -60,5 +60,5 @@ The trained model is stored on the server side (see parameter \code{newobj}).
 }
 \details{
 If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
-by an administratorat the server side, the models themselves are returned in addition.
+by an administrator at the server side, the model itself is returned in addition.
 }

@@ -1,10 +1,5 @@
 library(dsBoltzmannMachinesClient)
-o <- datashield.login(logins = data.frame(server = "server",
-                                          url = "http://10.5.10.57:8080",
-                                          user = "user",
-                                          password = "password",
-                                          table ="50bin.x"),
-                      assign = TRUE)
+
 result <- ds.monitored_fitdbm(o, data ="D", epochs = 2,nhiddens = c(2,2))
 ds.setJuliaSeed(o, 1) # for reproducibility
 result <- ds.monitored_fitdbm(datasources = o, data ="D", nhiddens = c(50, 25, 15),
@@ -51,7 +46,7 @@ result <- ds.monitored_fitrbm(o, data = "D.Train",
                               nhidden = 2,
                               learningrate = 0.005, epochs = 25) # TODO change plots for likelihood
 
-ds.samples(datasources = o, bm = "rbm", nsamples = 5, burnin = 100)
+ds.bm.samples(datasources = o, bm = "rbm", nsamples = 5, burnin = 100)
 
 result <- ds.monitored_fitrbm(o, data = "D.Train", monitoring = NULL)
 
@@ -78,9 +73,18 @@ plotMonitoring(result)
 
 # Test likelihood
 library(dsBaseClient)
+# o <- datashield.login(logins = data.frame(server = "server",
+#                                           url = "http://10.5.10.57:8080",
+#                                           user = "user",
+#                                           password = "password",
+#                                           table ="50bin.x"),
+#                       assign = TRUE)
 ds.subset("D", subset = "first5", cols = 1:5)
 ds.splitdata(o, "first5", 0.1, "D.Train", "D.Test")
 ds.monitored_fitdbm(o, data = "first5", nhiddens = c(2,2))
+
+result <- ds.monitored_traindbm(o, data = "first5", learningrate = 0.01, epochs = 15)
+plotMonitoring(result)
 
 ds.dbm.exactloglikelihood(o, data = "D.Test")
 ds.dbm.logproblowerbound(o, data = "D.Test")

@@ -22,7 +22,7 @@ Defaults to \code{"dbm"}}
 \item{data}{The name of the variable that holds the data on the server-side.
 Defaults to \code{"D"}.}
 
-\item{monitoring}{Name for monitoring options used for monitoring the fine-tuning.
+\item{monitoring}{Name(s) for the monitoring options used for monitoring the fine-tuning.
 Possible options:
 \itemize{
 \item \code{"logproblowerbound"}: Variational lower bound of log probability (Default)
@@ -48,11 +48,12 @@ as the visible layer.}
 
 \item{epochs}{Number of training epochs for fine-tuning, defaults to 10}
 
-\item{nparticles}{Number of particles used for sampling during joint training of
-DBM, default 100}
+\item{nparticles}{Number of particles used for sampling during fine-tuning of the
+DBM, defaults to 100}
 
 \item{learningrate}{Learning rate for joint training of layers (= fine-tuning)
-using the learning algorithm for a general Boltzmann Machine.
+using the learning algorithm for a general Boltzmann Machine
+with mean-field approximation.
 The learning rate for fine tuning is by default decaying with the number of epochs,
 starting with the given value for the \code{learningrate}.
 By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.}
