@@ -376,7 +376,7 @@ ds.bm.defineLayer <- function(datasources, newobj,
                            cdsteps = NULL,
                            startrbm = NULL) {
 
-   cally <- call("defineLayerDS", newobj,
+   cally <- call("bm.defineLayerDS", newobj,
                  epochs = epochs,
                  learningrate = learningrate,
                  learningrates = asDSVectorArg(learningrates),
@@ -407,7 +407,7 @@ ds.bm.defineLayer <- function(datasources, newobj,
 #'   by \code{\link{ds.bm.defineLayer}} before.
 ds.bm.definePartitionedLayer <- function (datasources, newobj, parts) {
    parts <- asDSVectorArg(parts)
-   cally <- call("definePartitionedLayerDS", newobj, parts)
+   cally <- call("bm.definePartitionedLayerDS", newobj, parts)
    datashield.aggregate(datasources, cally)
    invisible()
 }
@@ -426,7 +426,7 @@ ds.bm.definePartitionedLayer <- function (datasources, newobj, parts) {
 #'   containing the two-dimensional representation for
 #'   each of the samples in the rows. The samples are shuffled at random.
 ds.dbm.top2LatentDims <- function(datasources, dbm = "dbm", data = "D") {
-   cally <- call("dbm2TopLatentDimsDS", dbm, data)
+   cally <- call("dbm.top2LatentDimsDS", dbm, data)
    datashield.aggregate(datasources, cally)
 }
 

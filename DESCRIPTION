@@ -1,7 +1,7 @@
 Package: dsBoltzmannMachinesClient
 Type: Package
 Title: Client for dsBoltzmannMachines
-Version: 0.1.0
+Version: 0.1.0.9000
 Author: Stefan Lenz
 Maintainer: Stefan Lenz <lenz@imbi.uni-freiburg.de>
 Description: Calls the package dsBoltzmannMachines to train and use 

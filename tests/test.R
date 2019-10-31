@@ -1,11 +1,10 @@
 library(dsBoltzmannMachinesClient)
-logindata <- data.frame(server = "server",
-                        url = "http://10.5.10.57:8080",
-                        user = "user",
-                        password = "password",
-                        table ="50bin.x")
-
-o <- datashield.login(logins = logindata, assign = TRUE)
+o <- datashield.login(logins = data.frame(server = "server",
+                                          url = "http://10.5.10.57:8080",
+                                          user = "user",
+                                          password = "password",
+                                          table ="50bin.x"),
+                      assign = TRUE)
 result <- ds.monitored_fitdbm(o, data ="D", epochs = 2,nhiddens = c(2,2))
 ds.setJuliaSeed(o, 1) # for reproducibility
 result <- ds.monitored_fitdbm(datasources = o, data ="D", nhiddens = c(50, 25, 15),
