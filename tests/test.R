@@ -1,4 +1,10 @@
 library(dsBoltzmannMachinesClient)
+o <- datashield.login(logins = data.frame(server = "server",
+                                          url = "http://10.5.10.57:8080",
+                                          user = "user",
+                                          password = "password",
+                                          table ="50bin.x"),
+                      assign = TRUE)
 
 result <- ds.monitored_fitdbm(o, data ="D", epochs = 2,nhiddens = c(2,2))
 ds.setJuliaSeed(o, 1) # for reproducibility
@@ -99,6 +105,7 @@ ds.rbm.loglikelihood(o, data = "D.Test", nparticles = 50, burnin = 10, ntemperat
 
 
 # TODO data preprocessing for Softmax0BernoulliRBM
+
 ds.bm.defineLayer(o, "layer1", nhidden = 4, rbmtype = "Softmax0BernoulliRBM", categories = 2)
 ds.bm.defineLayer(o, "layer2", nhidden = 4)
 ds.monitored_fitdbm(o, pretraining = c("layer1", "layer2"))
