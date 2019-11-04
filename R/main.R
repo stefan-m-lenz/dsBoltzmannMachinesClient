@@ -19,7 +19,7 @@ print.monitoringresult <- function(x) {
 #' The monitoring data is returned to the user.
 #' The trained model is stored on the server side (see parameter \code{newobj}).
 #'
-#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' If the option \code{dsBoltzmannMachines.shareModels} is set to \code{TRUE}
 #' by an administratorat the server side, the models themselves are returned in addition.
 #'
 #' @param datasources A list of Opal object(s) as a handle to the server-side session
@@ -112,7 +112,7 @@ ds.monitored_fitrbm <- function(datasources, data = "D", newobj = 'rbm',
 #' The monitoring data is returned to the user.
 #' The trained model is stored on the server side (see parameter \code{newobj}).
 #'
-#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' If the option \code{dsBoltzmannMachines.shareModels} is set to \code{TRUE}
 #' by an administrator at the server side, the model itself is returned in addition.
 #'
 #' @param datasources A list of Opal object(s) as a handle to the server-side session
@@ -179,7 +179,7 @@ ds.monitored_stackrbms <- function(datasources, data = "D", newobj = 'rbmstack',
 #' The monitoring data is returned to the user.
 #' The trained model is stored on the server side (see parameter \code{newobj}).
 #'
-#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' If the option \code{dsBoltzmannMachines.shareModels} is set to \code{TRUE}
 #' by an administrator at the server side, the model itself is returned in addition.
 #'
 #' @param dbm The name of DBM model that is to be fine-tuned. Defaults to \code{"dbm"}.
@@ -229,7 +229,7 @@ ds.monitored_traindbm <- function(datasources, dbm = "dbm",
 #' The monitoring data is returned to the user.
 #' The trained model is stored on the server side (see parameter \code{newobj}).
 #'
-#' If the option \code{datashield.BoltzmannMachines.shareModels} is set to \code{TRUE}
+#' If the option \code{dsBoltzmannMachines.shareModels} is set to \code{TRUE}
 #' by an administratorat the server side, the models themselves are returned in addition.
 #'
 #' @param datasources A list of Opal object(s) as a handle to the server-side session

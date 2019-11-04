@@ -78,13 +78,14 @@ result <- ds.monitored_fitrbm(o, data = "D", epochs = 100, batchsize = 10, pcd =
 plotMonitoring(result)
 
 # Test likelihood
+datashield.logout(o)
 library(dsBaseClient)
-# o <- datashield.login(logins = data.frame(server = "server",
-#                                           url = "http://10.5.10.57:8080",
-#                                           user = "user",
-#                                           password = "password",
-#                                           table ="50bin.x"),
-#                       assign = TRUE)
+o <- datashield.login(logins = data.frame(server = "server",
+                                          url = "http://10.5.10.57:8080",
+                                          user = "user",
+                                          password = "password",
+                                          table ="50bin.x"),
+                      assign = TRUE)
 ds.subset("D", subset = "first5", cols = 1:5)
 ds.splitdata(o, "first5", 0.1, "D.Train", "D.Test")
 ds.monitored_fitdbm(o, data = "first5", nhiddens = c(2,2))
@@ -103,6 +104,15 @@ ds.rbm.exactloglikelihood(o, data = "D.Test")
 ds.rbm.loglikelihood(o, data = "D.Test")
 ds.rbm.loglikelihood(o, data = "D.Test", nparticles = 50, burnin = 10, ntemperatures = 50, parallelized = TRUE)
 
+library(tools)
+#Error: to few rows
+ds.subset("D", subset = "toofew", rows = 1:5)
+ds.dim(datasources = o, "toofew")
+assertError(ds.monitored_fitdbm(o, data = "toofew", learningrate = 0.01, epochs = 15))
+
+# Errors: must not contain disclosive information
+assertError(ds.rbm.loglikelihood(o, rbm = "D"))
+assertError(ds.rbm.exactloglikelihood(o, rbm = "D"))
 
 # TODO data preprocessing for Softmax0BernoulliRBM
 
