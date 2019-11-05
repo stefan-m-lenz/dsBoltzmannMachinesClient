@@ -1,3 +1,10 @@
+.onAttach <- function(libname, pkgname) {
+   packageStartupMessage(
+      paste("Please note: The first calls to the server side package",
+            "'dsBoltzmannMachines' will take some time because Julia needs to warm up."))
+}
+
+
 asDSVectorArg <- function (x) {
    if (!is.null(x)) {
       x <- paste0(as.character(x), collapse = ",")
