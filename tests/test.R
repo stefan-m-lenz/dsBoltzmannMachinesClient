@@ -1,4 +1,7 @@
 library(dsBoltzmannMachinesClient)
+if (exists("o")) {
+   datashield.logout(o)
+}
 o <- datashield.login(logins = data.frame(server = "server",
                                           url = "http://10.5.10.57:8080",
                                           user = "user",

@@ -28,8 +28,7 @@ The following bash script, run with root provileges, can be used to set this up:
 
 ```bash
 wget https://github.com/stefan-m-lenz/JuliaConnectoR/releases/download/v0.3.1/JuliaConnectoR_0.3.1.tar.gz
-R -e 'install.packages("JuliaConnectoR_0.3.1.tar.gz", repos = NULL, type = "source")'
-rm JuliaConnectoR_0.3.1.tar.gz
+R -e 'install.packages("JuliaConnectoR")'
 
 wget https://github.com/stefan-m-lenz/dsBoltzmannMachines/releases/download/v1.0.1/dsBoltzmannMachines_1.0.1.tar.gz
 R -e 'install.packages("dsBoltzmannMachines_1.0.1.tar.gz", repos = NULL, type = "source")'
