@@ -4,10 +4,10 @@ This is the client side R package for using Deep Boltzmann machines as generativ
 
 The corresponding server side R package is [dsBoltzmannMachines](https://github.com/stefan-m-lenz/dsBoltzmannMachines).
 
-You can find a first conference abstract about this work here:
-https://dx.doi.org/10.3205/19gmds062
+More information can be found in the article 
+> Lenz, S., Hess, M. & Binder, H. Deep generative models in DataSHIELD. BMC Med Res Methodol 21, 64 (2021). https://doi.org/10.1186/s12874-021-01237-6
 
-There will be a full article available soon.
+
 
 ## Installation
 
