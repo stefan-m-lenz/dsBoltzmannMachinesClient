@@ -15,8 +15,8 @@ There will be a full article available soon.
 Execute the following R commands to install the client side package via the `devtools` package:
 
 ```R
-devtools::install_github("stefan-m-lenz/BoltzmannMachinesRPlots", ref = "v0.1.0")
-devtools::install_github("stefan-m-lenz/dsBoltzmannMachinesClient", ref = "v1.0.0")
+devtools::install_github("stefan-m-lenz/BoltzmannMachinesRPlots", ref = "v0.1.1")
+devtools::install_github("stefan-m-lenz/dsBoltzmannMachinesClient", ref = "v1.0.2")
 ```
 
 ### Server side
@@ -29,7 +29,7 @@ The following bash script, run with root provileges, can be used to set this up:
 ```bash
 R -e 'install.packages("JuliaConnectoR")'
 
-wget https://github.com/stefan-m-lenz/dsBoltzmannMachines/releases/download/v1.0.1/dsBoltzmannMachines_1.0.2.tar.gz
+wget https://github.com/stefan-m-lenz/dsBoltzmannMachines/releases/download/v1.0.2/dsBoltzmannMachines_1.0.2.tar.gz
 R -e 'install.packages("dsBoltzmannMachines_1.0.2.tar.gz", repos = NULL, type = "source")'
 rm dsBoltzmannMachines_1.0.2.tar.gz
 
