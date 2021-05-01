@@ -13,9 +13,9 @@ ds.splitdata(datasources, data, ratio, newobj1, newobj2)
 
 \item{ratio}{The ratio of samples}
 
-\item{newobj1}{Name for variable, where \eqn{x_1} is stored}
+\item{newobj1}{The name for the variable where \eqn{x_1} is stored}
 
-\item{newobj2}{Name for variable, where \eqn{x_2} is stored}
+\item{newobj2}{The name for the variable where \eqn{x_2} is stored}
 }
 \description{
 Splits a data set randomly into two data sets \eqn{x_1} and \eqn{x_2}, such that

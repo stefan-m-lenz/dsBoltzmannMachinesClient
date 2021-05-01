@@ -2,26 +2,39 @@
 % Please edit documentation in R/main.R
 \name{ds.bm.defineLayer}
 \alias{ds.bm.defineLayer}
-\title{Parameters for training one RBM-layer in a DBM or DBN}
+\title{Define training parameters for one RBM layer in a DBM or DBN}
 \usage{
-ds.bm.defineLayer(datasources, newobj, epochs = NULL,
-  learningrate = NULL, learningrates = NULL, sdlearningrate = NULL,
-  sdlearningrates = NULL, categories = NULL, monitoring = NULL,
-  rbmtype = NULL, nhidden = NULL, nvisible = NULL,
-  batchsize = NULL, pcd = NULL, cdsteps = NULL, startrbm = NULL)
+ds.bm.defineLayer(
+  datasources,
+  newobj,
+  epochs = NULL,
+  learningrate = NULL,
+  learningrates = NULL,
+  sdlearningrate = NULL,
+  sdlearningrates = NULL,
+  categories = NULL,
+  monitoring = NULL,
+  rbmtype = NULL,
+  nhidden = NULL,
+  nvisible = NULL,
+  batchsize = NULL,
+  pcd = NULL,
+  cdsteps = NULL,
+  startrbm = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
 
 \item{newobj}{The name of the server-side object where the parameters are stored}
 
-\item{nvisible}{Number of visible units in the RBM. Only relevant for partitioning.
+\item{nvisible}{The number of visible units in the RBM. Only relevant for partitioning.
 This parameter is derived as much as possible by \code{\link{ds.monitored_stackrbms}}.
 For multimodal DBMs with a partitioned first layer, it is necessary to specify
 the number of visible nodes for all but at most one partition in the input layer.}
 }
 \description{
-The call stores the parameters for training one RBM-layer in a DBM or DBN
+The call stores the given parameters for training one RBM-layer in a DBM or DBN
 on the server side in a Julia \code{TrainLayer} object.
 The parameters \code{rbmtype}, \code{nhidden}, \code{epochs},
   \code{learningrate}/\code{learningrates}, \code{categories},

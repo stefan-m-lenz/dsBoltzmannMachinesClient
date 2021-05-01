@@ -4,23 +4,36 @@
 \alias{ds.monitored_fitrbm}
 \title{Fit an RBM model}
 \usage{
-ds.monitored_fitrbm(datasources, data = "D", newobj = "rbm",
-  monitoring = "reconstructionerror", monitoringdata = NULL,
-  nhidden = NULL, epochs = NULL, upfactor = NULL,
-  downfactor = NULL, learningrate = NULL, learningrates = NULL,
-  pcd = NULL, cdsteps = NULL, categories = NULL, batchsize = NULL,
-  rbmtype = NULL, startrbm = NULL)
+ds.monitored_fitrbm(
+  datasources,
+  data = "D",
+  newobj = "rbm",
+  monitoring = "reconstructionerror",
+  monitoringdata = NULL,
+  nhidden = NULL,
+  epochs = NULL,
+  upfactor = NULL,
+  downfactor = NULL,
+  learningrate = NULL,
+  learningrates = NULL,
+  pcd = NULL,
+  cdsteps = NULL,
+  categories = NULL,
+  batchsize = NULL,
+  rbmtype = NULL,
+  startrbm = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
 
-\item{data}{The name of the variable that holds the data on the server-side.
+\item{data}{The name of the variable that holds the training data on the server-side.
 Defaults to \code{"D"}.}
 
-\item{newobj}{The name for the variable, in which the trained RBM will be stored.
-Defaults to \code{"rbm"}}
+\item{newobj}{The name for the variable in which the trained RBM will be stored.
+Defaults to \code{"rbm"}.}
 
-\item{monitoring}{Name for monitoring options used for RBM training.
+\item{monitoring}{Name(s) for monitoring options used for RBM training.
 Possible options:
 \itemize{
 \item \code{"reconstructionerror"}: Calculates the reconstruction error (Default)
@@ -33,41 +46,41 @@ This is only feasible for very small models.
 \item{monitoringdata}{A vector of names for server-side data sets that are to be used for
 monitoring}
 
-\item{nhidden}{number of hidden units for the returned RBM}
+\item{nhidden}{The number of hidden units of the returned RBM}
 
-\item{epochs}{number of training epochs}
+\item{epochs}{The number of training epochs}
 
-\item{upfactor}{If this function is used e.g. for pretraining a part of
-a DBM, it is necessary to multiply the weights of the RBM with factors.}
+\item{upfactor}{If this function is used for pretraining a part of
+a DBM, it is necessary to multiply the input from the visible layer of the RBM with a factor.}
 
-\item{downfactor}{If this function is used e.g. for pretraining a part of
-a DBM, it is necessary to multiply the weights of the RBM with factors.}
+\item{downfactor}{If this function is used for pretraining a part of
+a DBM, it is necessary to multiply the input from the hidden layer of the RBM with a factor.}
 
 \item{learningrate}{The learning rate for the weights and biases
-can be specified as single value, used throughout all epochs. Defaults to 0.005.}
+can be specified as a single value, used throughout all epochs. Defaults to 0.005.}
 
 \item{learningrates}{The learning rate for the weights and biases
 can also be specified as a vector that contains a value for each epoch.}
 
-\item{pcd}{indicating whether Persistent Contrastive Divergence (PCD) is to
-be used (true, default) or simple CD that initializes the Gibbs Chain with
-the training sample (false)}
+\item{pcd}{Indicating whether Persistent Contrastive Divergence (PCD) is to
+be used (\code{TRUE}, default) or simple CD that initializes the Gibbs chain with
+the training sample (\code{FALSE})}
 
-\item{cdsteps}{number of Gibbs sampling steps for (persistent)
-contrastive divergence, defaults to 1}
+\item{cdsteps}{The number of Gibbs sampling steps for (persistent)
+contrastive divergence. Defaults to 1.}
 
-\item{categories}{only relevant if \code{rbmtype} is \code{"Softmax0BernoulliRBM"}.
+\item{categories}{Only relevant if \code{rbmtype} is \code{"Softmax0BernoulliRBM"}.
 The number of categories, if all variables have the same number
-of categories, or as vector that contains the number of categories
-of the i'th categorical variable in the i'th entry.}
+of categories, or a vector that contains the number of categories
+for the i'th categorical variable in the i'th entry.}
 
-\item{batchsize}{number of samples that are used for making one step in the
+\item{batchsize}{The number of samples that are used for making one step in the
 stochastic gradient descent optimizer algorithm. Default is 1.}
 
-\item{rbmtype}{the type of the RBM that is to be trained
-This must be a subtype of \code{AbstractRBM} and defaults to \code{BernoulliRBM}.}
+\item{rbmtype}{The type of the RBM that is to be trained.
+This must be a subtype of \code{AbstractRBM}. Defaults to \code{BernoulliRBM}.}
 
-\item{startrbm}{a name for an RBM object at the server side that
+\item{startrbm}{A name for an RBM object at the server side that
 is used as starting value for training.
 If this argument is specified, \code{nhidden} and \code{rbmtype} are ignored.}
 }
@@ -80,5 +93,5 @@ The trained model is stored on the server side (see parameter \code{newobj}).
 }
 \details{
 If the option \code{dsBoltzmannMachines.shareModels} is set to \code{TRUE}
-by an administratorat the server side, the models themselves are returned in addition.
+by an administrator at the server side, the models themselves are returned in addition.
 }

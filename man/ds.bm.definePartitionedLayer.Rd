@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{ds.bm.definePartitionedLayer}
 \alias{ds.bm.definePartitionedLayer}
-\title{Parameters for training a partitioned RBM-layer in a DBM or DBN}
+\title{Define parameters for training a partitioned RBM layer in a DBM or DBN}
 \usage{
 ds.bm.definePartitionedLayer(datasources, newobj, parts)
 }
@@ -15,6 +15,6 @@ ds.bm.definePartitionedLayer(datasources, newobj, parts)
 by \code{\link{ds.bm.defineLayer}} before.}
 }
 \description{
-Creates an object at the server-side that encapsulates parameters for training
+Creates an object at the server-side that encapsulates the parameters for training
 a partitioned layer.
 }

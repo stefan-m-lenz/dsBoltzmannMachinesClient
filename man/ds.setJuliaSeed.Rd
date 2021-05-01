@@ -7,7 +7,7 @@
 ds.setJuliaSeed(datasources, seed)
 }
 \arguments{
-\item{seed}{the seed to set}
+\item{seed}{A single integer value that is used as the seed for the random number generator in Julia}
 }
 \description{
 Set a seed for the random generator in Julia.

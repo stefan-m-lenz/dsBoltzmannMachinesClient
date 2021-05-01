@@ -4,11 +4,20 @@
 \alias{ds.monitored_stackrbms}
 \title{Train a stack of RBMs}
 \usage{
-ds.monitored_stackrbms(datasources, data = "D", newobj = "rbmstack",
-  monitoring = "reconstructionerror", monitoringdata = NULL,
-  nhiddens = NULL, epochs = NULL, predbm = NULL,
-  samplehidden = NULL, learningrate = NULL, batchsize = NULL,
-  trainlayers = NULL)
+ds.monitored_stackrbms(
+  datasources,
+  data = "D",
+  newobj = "rbmstack",
+  monitoring = "reconstructionerror",
+  monitoringdata = NULL,
+  nhiddens = NULL,
+  epochs = NULL,
+  predbm = NULL,
+  samplehidden = NULL,
+  learningrate = NULL,
+  batchsize = NULL,
+  trainlayers = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
@@ -16,20 +25,20 @@ ds.monitored_stackrbms(datasources, data = "D", newobj = "rbmstack",
 \item{data}{The name of the variable that holds the data on the server-side.
 Defaults to \code{"D"}.}
 
-\item{newobj}{The name for the variable, in which the trained RBM will be stored.
-Defaults to \code{"rbmstack"}}
+\item{newobj}{The name of the variable in which the trained RBM will be stored.
+Defaults to \code{"rbmstack"}.}
 
-\item{monitoring}{Name for monitoring options used for RBM training.
+\item{monitoring}{Name(s) for monitoring options used for RBM training.
 For possible options, see \code{\link{ds.monitored_fitrbm}}}
 
 \item{monitoringdata}{A vector of names for server-side data sets that are to be used for
 monitoring. The data is propagated forward through the
 network to monitor higher levels.}
 
-\item{nhiddens}{vector containing the number of nodes of the i'th hidden layer in
+\item{nhiddens}{A vector containing the number of nodes of the i'th hidden layer in
 the i'th entry}
 
-\item{epochs}{number of training epochs}
+\item{epochs}{The number of training epochs}
 
 \item{predbm}{logical value indicating that the greedy layerwise training is
 pre-training for a DBM.
@@ -39,11 +48,11 @@ If its value is \code{FALSE} (default), a DBN is trained.}
 with sampled values instead of the deterministic potential.
 Using the deterministic potential (\code{FALSE}) is the default.}
 
-\item{learningrate}{learningrate, default 0.005}
+\item{learningrate}{The learningrate used for training the RBMs. Defaults to 0.005.}
 
-\item{batchsize}{size of minibatches, defaults to 1}
+\item{batchsize}{The size of the training minibatches. Defaults to 1.}
 
-\item{trainlayers}{a vector of names for \code{TrainLayer} objects.
+\item{trainlayers}{A vector of names of \code{TrainLayer} objects.
 With this argument it is possible
 to specify the training parameters for each layer/RBM individually.
 If the number of training epochs and the learning rate are not specified
@@ -52,8 +61,8 @@ and \code{batchsize} are used.
 For more information see help of \code{\link{ds.bm.defineLayer}}.}
 }
 \description{
-Performs greedy layerwise training for Deep Belief Networks or greedy layerwise
-pretraining for Deep Boltzmann Machines.
+Performs greedy layerwise training for deep belief networks or greedy layerwise
+pretraining for deep Boltzmann machines.
 During the training, monitoring data is collected by default.
 The monitoring data is returned to the user.
 The trained model is stored on the server side (see parameter \code{newobj}).

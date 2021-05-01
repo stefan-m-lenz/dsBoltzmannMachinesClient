@@ -4,19 +4,29 @@
 \alias{ds.monitored_fitdbm}
 \title{Fits a (multimodal) DBM model}
 \usage{
-ds.monitored_fitdbm(datasources, newobj = "dbm", data = "D",
-  monitoring = "logproblowerbound", monitoringdata = data,
+ds.monitored_fitdbm(
+  datasources,
+  newobj = "dbm",
+  data = "D",
+  monitoring = "logproblowerbound",
+  monitoringdata = data,
   monitoringpretraining = "reconstructionerror",
-  monitoringdatapretraining = monitoringdata, nhiddens = NULL,
-  epochs = NULL, nparticles = NULL, learningrate = NULL,
-  learningrates = NULL, learningratepretraining = NULL,
-  epochspretraining = NULL, batchsizepretraining = NULL,
-  pretraining = NULL)
+  monitoringdatapretraining = monitoringdata,
+  nhiddens = NULL,
+  epochs = NULL,
+  nparticles = NULL,
+  learningrate = NULL,
+  learningrates = NULL,
+  learningratepretraining = NULL,
+  epochspretraining = NULL,
+  batchsizepretraining = NULL,
+  pretraining = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
 
-\item{newobj}{The name for the variable, in which the trained DBM will be stored.
+\item{newobj}{The name of the variable in which the trained DBM will be stored.
 Defaults to \code{"dbm"}}
 
 \item{data}{The name of the variable that holds the data on the server-side.
@@ -52,13 +62,13 @@ as the visible layer.}
 DBM, defaults to 100}
 
 \item{learningrate}{Learning rate for joint training of layers (= fine-tuning)
-using the learning algorithm for a general Boltzmann Machine
+using the learning algorithm for a general Boltzmann machine
 with mean-field approximation.
 The learning rate for fine tuning is by default decaying with the number of epochs,
 starting with the given value for the \code{learningrate}.
 By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.}
 
-\item{learningrates}{a vector of learning rates for each epoch of fine-tuning}
+\item{learningrates}{A vector of learning rates for each epoch of fine-tuning}
 
 \item{learningratepretraining}{Learning rate for pretraining,
 defaults to \code{learningrate}}
@@ -82,12 +92,12 @@ explicitly for a layer, the values of \code{epochspretraining},
 The procedure for DBM fitting consists of two parts:
 First a stack of RBMs is pretrained in a greedy layerwise manner
 (see \code{\link{ds.monitored_stackrbms}}). Then the weights of all layers are jointly
-trained using the general Boltzmann Machine learning procedure.
+trained using the general Boltzmann machine learning procedure.
 During pre-training and fine-tuning, monitoring data is collected by default.
 The monitoring data is returned to the user.
 The trained model is stored on the server side (see parameter \code{newobj}).
 }
 \details{
 If the option \code{dsBoltzmannMachines.shareModels} is set to \code{TRUE}
-by an administratorat the server side, the models themselves are returned in addition.
+by an administrator at the server side, the models themselves are returned in addition.
 }

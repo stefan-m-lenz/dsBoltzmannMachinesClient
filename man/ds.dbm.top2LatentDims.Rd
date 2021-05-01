@@ -21,6 +21,6 @@ A matrix with two columns for each of the sites,
 }
 \description{
 Calculates the mean-field approximation of the activation of the top hidden nodes in
-the DBM. If there are more than two nodes in the top layer, the activation is further
-reduced in dimensionality using a PCA.
+the DBM. If there are more than two nodes in the top layer, the dimensionality is further
+reduced using a principal component analysis (PCA).
 }

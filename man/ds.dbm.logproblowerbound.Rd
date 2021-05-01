@@ -2,14 +2,22 @@
 % Please edit documentation in R/main.R
 \name{ds.dbm.logproblowerbound}
 \alias{ds.dbm.logproblowerbound}
-\title{Estimation of Variational lower bound of log probability for a DBM model}
+\title{Estimation of the variational lower bound of the log probability of a DBM model}
 \usage{
-ds.dbm.logproblowerbound(datasources, dbm = "dbm", data = "D",
-  parallelized = NULL, ntemperatures = NULL, nparticles = NULL,
-  burnin = NULL)
+ds.dbm.logproblowerbound(
+  datasources,
+  dbm = "dbm",
+  data = "D",
+  parallelized = NULL,
+  ntemperatures = NULL,
+  nparticles = NULL,
+  burnin = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
+
+\item{dbm}{The name of the DBM model on the server-side. Defaults to \code{"dbm"}.}
 
 \item{data}{The name of the variable that holds the data on the server-side.
 Defaults to \code{"D"}.}
@@ -19,9 +27,7 @@ to the target model, defaults to 100}
 
 \item{nparticles}{Number of parallel chains and calculated weights in AIS, defaults to 100}
 
-\item{burnin}{Number of steps to sample for the Gibbs transition between models in AIS}
-
-\item{rbm}{The name of the DBM model on the server-side. Defaults to \code{"dbm"}.}
+\item{burnin}{Number of steps to sample for the Gibbs transition between the intermediate models in AIS}
 }
 \description{
 Estimates the variational lower bound of the likelihood of a DBM using

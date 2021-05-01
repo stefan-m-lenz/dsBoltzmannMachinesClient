@@ -4,9 +4,15 @@
 \alias{ds.rbm.loglikelihood}
 \title{Likelihood  estimation for an RBM model}
 \usage{
-ds.rbm.loglikelihood(datasources, rbm = "rbm", data = "D",
-  parallelized = NULL, ntemperatures = NULL, nparticles = NULL,
-  burnin = NULL)
+ds.rbm.loglikelihood(
+  datasources,
+  rbm = "rbm",
+  data = "D",
+  parallelized = NULL,
+  ntemperatures = NULL,
+  nparticles = NULL,
+  burnin = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
@@ -21,7 +27,7 @@ to the target model, defaults to 100}
 
 \item{nparticles}{Number of parallel chains and calculated weights in AIS, defaults to 100}
 
-\item{burnin}{Number of steps to sample for the Gibbs transition between models in AIS}
+\item{burnin}{Number of steps to sample for the Gibbs transition between the intermediate models in AIS}
 }
 \description{
 Estimates the log-likelihood for an RBM model using annealed importance sampling (AIS)

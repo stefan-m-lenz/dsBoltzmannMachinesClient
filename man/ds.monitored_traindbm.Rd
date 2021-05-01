@@ -4,10 +4,18 @@
 \alias{ds.monitored_traindbm}
 \title{Fine-Tuning of a DBM}
 \usage{
-ds.monitored_traindbm(datasources, dbm = "dbm", newobj = "dbm",
-  data = "D", monitoring = "logproblowerbound",
-  monitoringdata = data, epochs = NULL, nparticles = NULL,
-  learningrate = NULL, learningrates = NULL)
+ds.monitored_traindbm(
+  datasources,
+  dbm = "dbm",
+  newobj = "dbm",
+  data = "D",
+  monitoring = "logproblowerbound",
+  monitoringdata = data,
+  epochs = NULL,
+  nparticles = NULL,
+  learningrate = NULL,
+  learningrates = NULL
+)
 }
 \arguments{
 \item{dbm}{The name of DBM model that is to be fine-tuned. Defaults to \code{"dbm"}.}
@@ -15,7 +23,7 @@ ds.monitored_traindbm(datasources, dbm = "dbm", newobj = "dbm",
 \item{newobj}{The name of the variable to store the new DBM model.
 Defaults to \code{"dbm"}, such that the previous model is overwritten.}
 
-\item{monitoring}{Name for monitoring options used for DBM training.
+\item{monitoring}{Name(s) for monitoring options used for DBM training.
 For possible options, see \code{\link{ds.monitored_fitdbm}}}
 
 \item{monitoringdata}{A vector of names of server-side data sets that are to be used for
@@ -31,7 +39,7 @@ decaying by default decaying with the number of epochs,
 starting with the given value for the \code{learningrate}.
 By default, the learning rate decreases with the factor \eqn{11 / (10 + epoch)}.}
 
-\item{learningrates}{a vector of learning rates for each epoch of fine-tuning}
+\item{learningrates}{A vector of learning rates for each epoch of fine-tuning}
 }
 \description{
 This functions performs monitored fine-tuning of a given DBM model.

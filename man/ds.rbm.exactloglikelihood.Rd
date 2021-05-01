@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{ds.rbm.exactloglikelihood}
 \alias{ds.rbm.exactloglikelihood}
-\title{Exact calculation of the log-likelihood for an RBM}
+\title{Exact calculation of the log-likelihood of an RBM}
 \usage{
 ds.rbm.exactloglikelihood(datasources, rbm = "rbm", data = "D")
 }

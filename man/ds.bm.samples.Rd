@@ -2,31 +2,38 @@
 % Please edit documentation in R/main.R
 \name{ds.bm.samples}
 \alias{ds.bm.samples}
-\title{Generates samples from a Boltzmann machine model}
+\title{Generate samples from a Boltzmann machine model}
 \usage{
-ds.bm.samples(datasources, bm, nsamples, burnin = NULL,
-  conditionIndex = NULL, conditionValue = NULL, samplelast = NULL)
+ds.bm.samples(
+  datasources,
+  bm,
+  nsamples,
+  burnin = NULL,
+  conditionIndex = NULL,
+  conditionValue = NULL,
+  samplelast = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
 
 \item{bm}{The name of the model to sample from on the server-side}
 
-\item{nsamples}{Number of samples to generate}
+\item{nsamples}{The number of samples to generate}
 
-\item{burnin}{Number of Gibbs sampling steps, defaults to 50.}
+\item{burnin}{The number of Gibbs sampling steps, defaults to 50.}
 
 \item{conditionIndex}{A vector containing indices of variables that are to be conditioned on}
 
 \item{conditionValue}{A vector containing the values for the variables that are to be conditioned on.
 (must be of same length as \code{conditionIndex})}
 
-\item{samplelast}{boolean to indicate whether to sample in last step (\code{TRUE}, default)
-or whether to use the activation potential.}
+\item{samplelast}{boolean to indicate whether to sample in the last step (\code{TRUE}, default)
+or whether to use the deterministic activation potential.}
 }
 \description{
 A Gibbs sampler is run in the Boltzmann machine model to sample from the learnt
 distribution. This can also be used for sampling from a
 \emph{conditional distribution}
-(see argument `conditionIndex` and `conditionValue` below.)
+(see arguments \code{conditionIndex} and \code{conditionValue} below.)
 }

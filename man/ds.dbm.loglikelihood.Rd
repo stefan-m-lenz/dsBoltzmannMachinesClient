@@ -4,9 +4,15 @@
 \alias{ds.dbm.loglikelihood}
 \title{Likelihood estimation for a DBM model}
 \usage{
-ds.dbm.loglikelihood(datasources, dbm = "dbm", data = "D",
-  parallelized = NULL, ntemperatures = NULL, nparticles = NULL,
-  burnin = NULL)
+ds.dbm.loglikelihood(
+  datasources,
+  dbm = "dbm",
+  data = "D",
+  parallelized = NULL,
+  ntemperatures = NULL,
+  nparticles = NULL,
+  burnin = NULL
+)
 }
 \arguments{
 \item{datasources}{A list of Opal object(s) as a handle to the server-side session}
@@ -16,15 +22,16 @@ ds.dbm.loglikelihood(datasources, dbm = "dbm", data = "D",
 \item{data}{The name of the variable that holds the data on the server-side.
 Defaults to \code{"D"}.}
 
-\item{ntemperatures}{Number of temperatures for annealing from the starting model
+\item{ntemperatures}{The number of temperatures for annealing from the starting model
 to the target model, defaults to 100}
 
-\item{nparticles}{Number of parallel chains and calculated weights in AIS, defaults to 100}
+\item{nparticles}{The number of parallel chains and calculated weights in AIS, defaults to 100}
 
-\item{burnin}{Number of steps to sample for the Gibbs transition between models in AIS}
+\item{burnin}{The number of steps to sample for the Gibbs transition between the intermediate models in AIS}
 }
 \description{
-Performs a separate run of annealed importance sampling (AIS)
-for each of the samples to estimate the log-likelihood of a DBM in addition to
-estimating the partition function.
+Estimates the log-likelihood of a DBM.
+For this, separate runs of the annealed importance sampling algorithm (AIS)
+are performed in addition to the esimation of the partition function of the DBM
+via AIS.
 }

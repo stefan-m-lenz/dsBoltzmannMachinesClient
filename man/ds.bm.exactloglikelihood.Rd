@@ -2,7 +2,7 @@
 % Please edit documentation in R/main.R
 \name{ds.bm.exactloglikelihood}
 \alias{ds.bm.exactloglikelihood}
-\title{Exact calculation of the log-likelihood for a Boltzmann machine}
+\title{Exact calculation of the log-likelihood of a Boltzmann machine}
 \usage{
 ds.bm.exactloglikelihood(datasources, bm, data = "D")
 }
