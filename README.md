@@ -29,9 +29,9 @@ The following bash script, run with root provileges, can be used to set this up:
 ```bash
 R -e 'install.packages("JuliaConnectoR")'
 
-wget https://github.com/stefan-m-lenz/dsBoltzmannMachines/releases/download/v1.0.1/dsBoltzmannMachines_1.0.1.tar.gz
-R -e 'install.packages("dsBoltzmannMachines_1.0.1.tar.gz", repos = NULL, type = "source")'
-rm dsBoltzmannMachines_1.0.1.tar.gz
+wget https://github.com/stefan-m-lenz/dsBoltzmannMachines/releases/download/v1.0.1/dsBoltzmannMachines_1.0.2.tar.gz
+R -e 'install.packages("dsBoltzmannMachines_1.0.2.tar.gz", repos = NULL, type = "source")'
+rm dsBoltzmannMachines_1.0.2.tar.gz
 
 
 JULIA_VERSION=julia-1.0.5
