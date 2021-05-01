@@ -1,2 +1,3 @@
 exportPattern("ds\\..*")
 export("print.monitoringresult")
+importFrom("DSI", "datashield.aggregate")
